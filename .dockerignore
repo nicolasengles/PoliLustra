@@ -1,0 +1,10 @@
+# Ignora a pasta de dependências da sua máquina local.
+# As dependências devem ser instaladas DENTRO do contêiner para garantir a compatibilidade com o ambiente Linux do contêiner.
+node_modules
+
+# IGNORA O FICHEIRO DE SEGREDOS! Nunca inclua segredos na imagem Docker.
+# As variáveis de ambiente serão injetadas em tempo de execução com a flag '--env-file'.
+.env
+
+# Ignora a pasta do Git.
+.git
