@@ -137,3 +137,7 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Arquivos CSS (executar "npm run sass" antes de iniciar o servidor)
+**/css/
+*.css

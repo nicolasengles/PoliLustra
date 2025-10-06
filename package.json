@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cross-env NODE_ENV=production node server.js",
-    "dev": "cross-env NODE_ENV=development nodemon server.js"
+    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "sass": "sass public/scss/styles.scss public/css/styles.css"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,8 @@
     "bootstrap": "^5.3.8",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "package.json": "^2.0.1"
+    "package.json": "^2.0.1",
+    "sass": "^1.93.2"
   },
   "devDependencies": {
     "connect-livereload": "^0.6.1",

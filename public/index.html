@@ -13,8 +13,8 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="images/logo_hor.png" height="50" alt="Logo PoliLustra">
+            <a class="navbar-brand ms-2" href="#">
+                <img src="images/logo_sqr.png" width="45" class="img-fluid" alt="Logo PoliLustra">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -37,12 +37,16 @@
             </div>
         </div>
     </nav>
-    <div id="hero-section" class="d-flex justify-content-center align-items-center text-center vh-90 bg-primary">
-        <div class="d-flex flex-column justify-content-center align-items-center w-50">
-            <img src="images/logo_hor.png" alt="Logo PoliLustra" class="img-fluid w-50">
-            <p class="font-itim fs-3">Dê uma cara nova à suas apresentações com imagens geradas por Inteligência Artificial!</p>
+    <div id="hero-section" class="d-flex justify-content-around align-items-center text-center vh-90 bg-primary flex-column flex-lg-row">
+        <div class="d-flex flex-column justify-content-center align-items-center w-100 w-lg-50 my-4">
+            <img src="images/logo_hor.png" alt="Logo PoliLustra" class="img-fluid w-100 w-lg-50 mb-4">
+            <p class="fs-3">Dê uma cara nova à suas apresentações com imagens geradas por Inteligência Artificial!</p>
+            <div class="d-flex justify-content-center align-items-center w-100 mt-4">
+                <button class="btn btn-light btn-lg border border-dark border-3 mx-1">Log In</button>
+                <button class="btn btn-danger btn-lg border border-dark border-3 mx-1">Criar Conta</button>
+            </div>
         </div>
-        <div class="w-50 h-75 d-flex justify-content-center align-items-center">
+        <div class="h-75 d-flex justify-content-center align-items-center">
             <img src="images/einstein.png" alt="Imagem gerada por inteligência artificial de Albert einstein utilizando um microscópio." class="img-fluid h-100 rounded">
         </div>
     </div>
