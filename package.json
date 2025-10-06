@@ -21,8 +21,14 @@
   },
   "homepage": "https://github.com/nicolasengles/PoliLustra#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "bootstrap": "^5.3.8",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.19.0",
+    "nodemailer": "^7.0.7"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
