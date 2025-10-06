@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <title>Login | PoliLustra</title>
+    <title>register | PoliLustra</title>
     <meta name="author" content="Nicolas Engles, Alec Duarte, Rafael Paiva">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -37,32 +37,45 @@
             </div>
         </div>
     </nav>
-    
-    <!--Quadrado de login-->
+
     <div class="d-flex justify-content-center align-items-center vh-90">
-        <div class="bg-white p-5 rounded-4 shadow text-center login-box mx-auto w-35 mt-3">
+        <div class="bg-white p-5 rounded-4 shadow text-center cadastro-box mx-auto w-35 mt-3">
                 
-                <h1 class="mb-4 login-title">Login</h1>
-                
+                <h1 class="mb-4 cadastro-title">Cadastro</h1>
+    
                 <form>
+                    <div class="mb-3">
+                        <input type="fullname" class="form-control custom-input" 
+                            placeholder="Nome Completo" required>
+                    </div>
+
                     <div class="mb-3">
                         <input type="email" class="form-control custom-input" 
                             placeholder="Email @sistemapoliedro.com ou @p4ed" required>
                     </div>
-                    
+
+                    <div class="mb-3">
+                        <input type="confirm_email" class="form-control custom-input" 
+                            placeholder="Confirme seu Email" required>
+                    </div>
+
                     <div class="mb-3">
                         <input type="password" class="form-control custom-input" 
                             placeholder="Senha" required>
                     </div>
-                    
-                    <div class="mb-4">
-                        <a href="#" class="forgot-password-link">Esqueceu sua Senha?</a>
+
+                    <div class="mb-3">
+                        <input type="confirm_password" class="form-control custom-input" 
+                            placeholder="Confirme sua Senha" required>
                     </div>
-            
-                    <button type="submit" class="btn btn-light btn-lg border border-dark border-3">Log In</button>
+
+                    <div class="termos-container">
+                        <input type="checkbox" id="aceite-termos" name="aceite-termos">
+                        <label for="aceite-termos">
+                            Aceito os <a href="link-para-termos.html" target="_blank">Termos e Condições</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-light btn-lg border border-dark border-3 mt-3">Log In</button>
                 </form>
-                
-            </div>
-    </div>
 </body>
 </html>
