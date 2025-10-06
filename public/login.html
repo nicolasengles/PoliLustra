@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Login | PoliLustra</title>
+    <meta name="author" content="Nicolas Engles, Alec Duarte, Rafael Paiva">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<!--navbar-->
+<body>
+    <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="images/logo_hor.png" height="50" alt="Logo PoliLustra">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Gerador de Imagens</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contato</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sobre Nós</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!--Quadrado de login-->
+    <div class="d-flex justify-content-center align-items-center vh-90">
+        <div class="bg-white p-5 rounded-4 shadow text-center login-box mx-auto w-35 mt-3">
+                
+                <h1 class="mb-4 login-title">Login</h1>
+                
+                <form>
+                    <div class="mb-3">
+                        <input type="email" class="form-control custom-input" 
+                            placeholder="Email @sistemapoliedro.com ou @p..." required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="password" class="form-control custom-input" 
+                            placeholder="Senha" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <a href="#" class="forgot-password-link">Esqueceu sua Senha?</a>
+                    </div>
+            
+                    <button type="submit" class="custom-login-btn">Log In</button>
+                </form>
+                
+            </div>
+    </div>
+</body>
+</html>
