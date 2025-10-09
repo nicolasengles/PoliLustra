@@ -18,13 +18,13 @@ const userSchema = new mongoose.Schema({
     match: [/.+\@.+\..+/, 'Por favor, insira um e-mail válido.'],
     
     // ****** VALIDAÇÃO PERSONALIZADA ADICIONADA AQUI ******
-    validate: {
-      validator: function (email) {
-        // Verifica se o e-mail termina com algum dos domínios permitidos
-        return allowedDomains.some(domain => email.endsWith(domain));
-      },
-      message: props => `${props.value} não é de um domínio permitido.`
-    }
+    // validate: {
+    //   validator: function (email) {
+    //     // Verifica se o e-mail termina com algum dos domínios permitidos
+    //     return allowedDomains.some(domain => email.endsWith(domain));
+    //   },
+    //   message: props => `${props.value} não é de um domínio permitido.`
+    // }
     // ******************************************************
 
   },
@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
 
     passwordResetToken: String,
     passwordResetExpires: Date,
-    
+
 });
 
 // Middleware (Hook) para encriptar a senha ANTES de salvar

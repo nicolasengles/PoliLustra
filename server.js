@@ -145,7 +145,7 @@ app.post('/api/users/forgot-password', async (req, res) => {
         }
     });
     await transporter.sendMail({
-      to: process.env.EMAIL_USER,
+      to: user.email,
       subject: 'Link para Redefinição de Senha',
       text: message
     });
@@ -227,6 +227,17 @@ app.put('/api/users/profile', protect, async (req, res) => {
     // E aqui também
     return res.status(500).json({ message: 'Erro interno do servidor.' });
   }
+});
+
+app.post('/api/users/logout', (req, res) => {
+  // A forma de "apagar" um cookie é enviá-lo novamente com um valor vazio
+  // e uma data de expiração no passado.
+  res.cookie('token', '', {
+    httpOnly: true,
+    expires: new Date(0), // Define a expiração para o início dos tempos (imediatamente)
+  });
+
+  res.status(200).json({ message: 'Logout bem-sucedido.' });
 });
 
 // 5. INICIAR O SERVIDOR
