@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('partials/head', {title: 'Cadastro | PoliLustra'}) %>
+    <body>
+        <%- include('partials/navbar') %>
+        <div class="d-flex justify-content-center align-items-center vh-90">
+            <div class="bg-white p-5 rounded-4 shadow text-center cadastro-box mx-auto w-80 w-lg-35 mt-3">      
+                <h1 class="mb-4 cadastro-title">Cadastro</h1>
+                <form>
+                    <div class="mb-3">
+                        <input type="fullname" class="form-control custom-input" placeholder="Nome Completo" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="email" class="form-control custom-input" placeholder="Email @sistemapoliedro.com ou @p4ed"
+                        required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="confirm_email" class="form-control custom-input" placeholder="Confirme seu Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control custom-input" placeholder="Senha" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="confirm_password" class="form-control custom-input" placeholder="Confirme sua Senha" required>
+                    </div>
+                    <div class="termos-container">
+                        <input type="checkbox" id="aceite-termos" name="aceite-termos">
+                        <label for="aceite-termos">
+                            Aceito os <a href="link-para-termos.html" target="_blank">Termos e Condições</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-light btn-lg border border-dark border-3 mt-3">Log In</button>
+                </form>
+            </div>
+        </div>
+        <%- include('partials/footer') %>
+    </body>
+</html>
