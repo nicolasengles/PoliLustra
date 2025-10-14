@@ -156,13 +156,54 @@ app.get('/api/ia/history', protect, async (req, res) => {
   try {
     const fotoS = await Image.find({user:req.user._id}).sort({createdAt:-1});
 
-    return res.status(200).json({ message: 'Histórico encontrado:', imagens: fotoS})
+    return res.status(200).json({ message: 'Histórico encontrado:', imagens: fotoS});
 
   } catch (error) {
-    console.error("Erro ao carregar o histórico:", error.response ? error.response.data : error.message)
-    return res.status(500).json({ message: 'Ocorreu um erro ao encontrar o histórico'})
+    console.error("Erro ao carregar o histórico:", error.response ? error.response.data : error.message);
+    return res.status(500).json({ message: 'Ocorreu um erro ao encontrar o histórico'});
   }
 
+});
+
+app.delete('/api/ia/history/:id', protect, async (req, res) => {
+  try {
+    // 1. ENCONTRAR A IMAGEM NO BANCO DE DADOS
+    // Usamos o ID que veio como parâmetro na URL (req.params.id)
+    const image = await Image.findById(req.params.id);
+
+    // 2. VERIFICAÇÃO DE SEGURANÇA 1: A IMAGEM EXISTE?
+    // Se findById não encontrar nada, ele retorna null.
+    if (!image) {
+      return res.status(404).json({ message: 'Imagem não encontrada.' });
+    }
+
+    // 3. VERIFICAÇÃO DE SEGURANÇA 2: O USUÁRIO É O DONO DA IMAGEM?
+    // Comparamos o ID do dono da imagem (image.user) com o ID do usuário
+    // que está logado (req.user._id), que o middleware 'protect' nos deu.
+    // Usamos .toString() para garantir uma comparação correta entre os ObjectIDs.
+    if (image.user.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: 'Não autorizado. Você não é o dono desta imagem.' });
+    }
+
+    // 4. DELETAR A IMAGEM DO CLOUDINARY
+    // Primeiro, precisamos extrair o 'public_id' da URL da imagem.
+    // Ex: "https://.../upload/v123/public_id.webp" -> "public_id"
+    const publicId = image.imageUrl.split('/').pop().split('.')[0];
+    
+    // Chamamos a função 'destroy' do uploader do Cloudinary
+    await cloudinary.uploader.destroy(publicId);
+
+    // 5. DELETAR A IMAGEM DO BANCO DE DADOS
+    // Agora que o arquivo foi removido da nuvem, removemos o registro do nosso DB.
+    await Image.findByIdAndDelete(req.params.id);
+
+    // 6. ENVIAR RESPOSTA DE SUCESSO
+    return res.status(200).json({ message: 'Imagem deletada com sucesso.' });
+
+  } catch (error) {
+    console.error("Erro ao deletar imagem:", error.message);
+    return res.status(500).json({ message: 'Ocorreu um erro interno ao deletar a imagem.' });
+  }
 });
 
 // Rota Principal
