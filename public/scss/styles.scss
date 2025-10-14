@@ -17,6 +17,7 @@
     --bs-light-rgb: 250 250 250;
     --bs-body-font-family: 'Ubuntu', sans-serif;
     --bs-body-font-size: 1.25rem;
+    --bs-navbar-color: var(--bs-body-color);
 }
 
 .btn-danger {
@@ -40,6 +41,10 @@
 }
 
 @media (min-width: map-get($grid-breakpoints, "lg")) {
+    .w-lg-25 {
+        width: 25% !important;
+    }
+
     .w-lg-35 {
         width: 35% !important;
     }
@@ -53,6 +58,11 @@
     }
 
     .mb-lg-0 {
+        margin-bottom: 0 !important;
+    }
+
+    .my-lg-0 {
+        margin-top: 0 !important;
         margin-bottom: 0 !important;
     }
 

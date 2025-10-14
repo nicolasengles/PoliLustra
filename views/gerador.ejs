@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('partials/head', {title: 'Gerador de Imagens Educacionais | PoliLustra'}) %>
+    <body>
+        <%- include('partials/navbar') %>
+        <div class="d-flex justify-content-around align-items-center">
+            <img class="img-fluid w-35 rounded-4 border border-dark border-3" src="images/placeholder.png" alt="Imagem a ser gerada">
+            <div>
+                <h1 class="text-center">Gerador de Imagens</h1>
+                <div class="d-flex">
+                    <label for="materia-select" class="form-label me-2">Matéria:</label>
+                    <select id="materia-select" class="form-select me-3">
+                        <option value="0">Selecione...</option>
+                        <option value="fisica">Física</option>
+                        <option value="quimica">Química</option>
+                    </select>
+                    <label for="tema-select" class="me-2">Tema:</label>
+                    <select id="tema-select" class="form-select">
+                        <option value="0">Selecione...</option>
+                        <option value="4">Química</option>
+                        <option value="5">Física</option>
+                    </select>
+                </div>
+                <label for="estilo-select" class="me-2">Estilo:</label>
+                <select id="estilo-select" class="form-select">
+                    <option value="0">Selecione...</option>
+                    <option value="4">Realista</option>
+                    <option value="5">Anime</option>
+                </select>
+                <label for="descricao-input" class="form-label">Descrição:</label>
+                <textarea id="descricao-input" class="form-control" rows="4" placeholder="Descreva a imagem que deseja gerar..."></textarea>
+                <button id="gerar-btn" class="btn btn-primary mt-3">Gerar Imagem</button>
+            </div>
+        </div>
+        <%- include('partials/footer') %>
+        <script src="js/ui-gerador.js"></script>
+    </body>
+</html>

@@ -29,8 +29,12 @@ app.get('/configuracoes', (req, res) => {
   res.render('configuracoes');
 });
 
-app.get('/about', (req, res) => {
-  res.render('about');
+app.get('/sobre', (req, res) => {
+  res.render('sobre');
+});
+
+app.get('/gerador', (req, res) => {
+  res.render('gerador');
 });
 
 app.listen(port, () => {
