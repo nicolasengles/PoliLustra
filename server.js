@@ -10,10 +10,21 @@ const jwt = require('jsonwebtoken'); // Necessário para a função de login
 const cookieParser = require('cookie-parser'); // <-- Adicionado
 const crypto = require('crypto');
 const nodemailer = require('nodemailer'); // <-- ADICIONE ESTA LINHA
+const Image = require('./Models/Image');
 
 // Importa o nosso Modelo de Utilizador
 const User = require('./Models/User');
 const { protect } = require('./middleware/authMiddleware');
+const fs = require('fs');
+const axios = require('axios');
+const FormData = require('form-data');
+const { v2: cloudinary } = require('cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -42,6 +53,98 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
 
 // 4. ROTAS DA APLICAÇÃO
+
+// API IA Stable core requisições
+
+// server.js
+
+app.post('/api/ia/generate', protect, async (req, res) => {
+  try {
+    const { prompt, output_format = 'webp', negative_prompt = '' } = req.body;
+
+    // --- NOVO: Bloco de Tradução via Microserviço ---
+    console.log('Chamando microserviço de tradução...');
+    const TRANSLATION_SERVICE_URL = 'http://localhost:5001/translate';
+
+    // 1. Traduz o prompt principal
+    const transResponse = await axios.post(TRANSLATION_SERVICE_URL, { text: prompt });
+    const translatedPrompt = transResponse.data.translatedText;
+
+    let translatedNegativePrompt = '';
+    // 2. Se houver um prompt negativo, traduz também
+    if (negative_prompt) {
+      const transNegativeResponse = await axios.post(TRANSLATION_SERVICE_URL, { text: negative_prompt });
+      translatedNegativePrompt = transNegativeResponse.data.translatedText;
+    }
+
+    console.log(`Prompt Original: "${prompt}" -> Traduzido: "${translatedPrompt}"`);
+    // --- Fim do Bloco de Tradução ---
+
+    // O resto do seu código continua exatamente igual, usando as variáveis traduzidas
+    const formData = new FormData();
+    formData.append('prompt', translatedPrompt);
+    formData.append('output_format', output_format);
+    if (translatedNegativePrompt) {
+      formData.append('negative_prompt', translatedNegativePrompt);
+    }
+    
+    // Gera a imagem com a API da Stability AI (como antes)
+    const responseFromStability = await axios.post(
+      `https://api.stability.ai/v2beta/stable-image/generate/core`,
+      formData,
+      {
+        responseType: 'arraybuffer',
+        headers: {
+          ...formData.getHeaders(),
+          Authorization: `Bearer ${process.env.STABILITY_API_KEY}`,
+          Accept: 'image/*',
+        },
+      }
+    );
+
+    if (responseFromStability.status !== 200) {
+      throw new Error(`${responseFromStability.status}: ${responseFromStability.data.toString()}`);
+    }
+
+    const imageBuffer = Buffer.from(responseFromStability.data);
+
+    // Faz o upload do buffer para o Cloudinary
+    const cloudinaryUpload = () => {
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { resource_type: 'image' },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        );
+        uploadStream.end(imageBuffer);
+      });
+    };
+
+    const uploadResult = await cloudinaryUpload();
+    const imageUrl = uploadResult.secure_url;
+    
+    // --- Guardar o histórico ---
+    const imageLog = new Image({
+        imageUrl: imageUrl, // assumindo que imageUrl foi obtida do Cloudinary
+        prompt: prompt, // Salva o prompt original em português
+        user: req.user._id,
+    });
+    await imageLog.save();
+
+    return res.status(200).json({ 
+      message: 'Imagem gerada com sucesso!', 
+      imageUrl: imageUrl 
+    });
+
+  } catch (error) {
+    // ... seu tratamento de erro ...
+    console.error("Erro na rota de geração de imagem:", error.response ? error.response.data : error.message);
+    return res.status(500).json({ message: 'Ocorreu um erro ao gerar a imagem.' });
+  }
+
+});
 
 // Rota Principal
 app.get('/', (req, res) => {
