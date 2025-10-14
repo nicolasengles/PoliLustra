@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser'); // <-- Adicionado
 const crypto = require('crypto');
 const nodemailer = require('nodemailer'); // <-- ADICIONE ESTA LINHA
 const Image = require('./Models/Image');
+const cors = require('cors');
 
 // Importa o nosso Modelo de Utilizador
 const User = require('./Models/User');
@@ -45,6 +46,11 @@ connectDB();
 app.use(express.urlencoded({ extended: true })); // Para formulários HTML
 app.use(express.json()); // Para receber JSON
 app.use(cookieParser()); // <-- Adicionado para gerir cookies
+
+app.use(cors({
+  origin: true, // Permite que qualquer origem envie cookies (bom para desenvolvimento)
+  credentials: true // Essencial! Permite que o navegador envie cookies na requisição
+}));
 
 // Servir ficheiros estáticos
 app.use(express.static(path.join(__dirname, 'html')));
@@ -142,6 +148,19 @@ app.post('/api/ia/generate', protect, async (req, res) => {
     // ... seu tratamento de erro ...
     console.error("Erro na rota de geração de imagem:", error.response ? error.response.data : error.message);
     return res.status(500).json({ message: 'Ocorreu um erro ao gerar a imagem.' });
+  }
+
+});
+
+app.get('/api/ia/history', protect, async (req, res) => {
+  try {
+    const fotoS = await Image.find({user:req.user._id}).sort({createdAt:-1});
+
+    return res.status(200).json({ message: 'Histórico encontrado:', imagens: fotoS})
+
+  } catch (error) {
+    console.error("Erro ao carregar o histórico:", error.response ? error.response.data : error.message)
+    return res.status(500).json({ message: 'Ocorreu um erro ao encontrar o histórico'})
   }
 
 });
