@@ -66,27 +66,41 @@ app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstra
 
 app.post('/api/ia/generate', protect, async (req, res) => {
   try {
-    const { prompt, output_format = 'webp', negative_prompt = '' } = req.body;
+    // 1. RECEBER OS CAMPOS ESTRUTURADOS DO CORPO DA REQUISIÇÃO
+    const { 
+      materia, 
+      assunto, 
+      prompt_personalizado, 
+      output_format = 'webp', 
+      negative_prompt = '' 
+    } = req.body;
 
-    // --- NOVO: Bloco de Tradução via Microserviço ---
+    // 2. VALIDAÇÃO DOS CAMPOS OBRIGATÓRIOS
+    // Garante que o frontend enviou as informações necessárias.
+    if (!materia || !assunto || !prompt_personalizado) {
+        return res.status(400).json({ message: 'Os campos matéria, assunto e prompt_personalizado são obrigatórios.' });
+    }
+
+    // 3. CONSTRUÇÃO DO PROMPT FINAL
+    // Criamos um prompt descritivo a partir das peças, otimizado para a IA.
+    const finalPrompt = `Imagem educacional para uma aula de ${materia} sobre ${assunto}. A cena deve ilustrar vividamente "${prompt_personalizado}". Estilo de arte digital, detalhado, cinematográfico e claro.`;
+    
+    console.log(`Prompt Construído: "${finalPrompt}"`);
+
+    // 4. TRADUÇÃO VIA MICROSERVIÇO
     console.log('Chamando microserviço de tradução...');
     const TRANSLATION_SERVICE_URL = 'http://localhost:5001/translate';
 
-    // 1. Traduz o prompt principal
-    const transResponse = await axios.post(TRANSLATION_SERVICE_URL, { text: prompt });
+    const transResponse = await axios.post(TRANSLATION_SERVICE_URL, { text: finalPrompt });
     const translatedPrompt = transResponse.data.translatedText;
 
     let translatedNegativePrompt = '';
-    // 2. Se houver um prompt negativo, traduz também
     if (negative_prompt) {
       const transNegativeResponse = await axios.post(TRANSLATION_SERVICE_URL, { text: negative_prompt });
       translatedNegativePrompt = transNegativeResponse.data.translatedText;
     }
 
-    console.log(`Prompt Original: "${prompt}" -> Traduzido: "${translatedPrompt}"`);
-    // --- Fim do Bloco de Tradução ---
-
-    // O resto do seu código continua exatamente igual, usando as variáveis traduzidas
+    // 5. PREPARAÇÃO E CHAMADA À API DE IA (STABILITY AI)
     const formData = new FormData();
     formData.append('prompt', translatedPrompt);
     formData.append('output_format', output_format);
@@ -94,7 +108,6 @@ app.post('/api/ia/generate', protect, async (req, res) => {
       formData.append('negative_prompt', translatedNegativePrompt);
     }
     
-    // Gera a imagem com a API da Stability AI (como antes)
     const responseFromStability = await axios.post(
       `https://api.stability.ai/v2beta/stable-image/generate/core`,
       formData,
@@ -112,9 +125,8 @@ app.post('/api/ia/generate', protect, async (req, res) => {
       throw new Error(`${responseFromStability.status}: ${responseFromStability.data.toString()}`);
     }
 
+    // 6. UPLOAD DA IMAGEM PARA O CLOUDINARY
     const imageBuffer = Buffer.from(responseFromStability.data);
-
-    // Faz o upload do buffer para o Cloudinary
     const cloudinaryUpload = () => {
       return new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
@@ -127,29 +139,30 @@ app.post('/api/ia/generate', protect, async (req, res) => {
         uploadStream.end(imageBuffer);
       });
     };
-
     const uploadResult = await cloudinaryUpload();
     const imageUrl = uploadResult.secure_url;
     
-    // --- Guardar o histórico ---
+    // 7. SALVAR O REGISTRO COMPLETO NO BANCO DE DADOS
     const imageLog = new Image({
-        imageUrl: imageUrl, // assumindo que imageUrl foi obtida do Cloudinary
-        prompt: prompt, // Salva o prompt original em português
+        imageUrl: imageUrl,
+        prompt: finalPrompt, // O prompt completo que nós construímos
+        materia: materia, // O "ingrediente" original
+        assunto: assunto, // O "ingrediente" original
+        prompt_personalizado: prompt_personalizado, // O "ingrediente" original
         user: req.user._id,
     });
     await imageLog.save();
 
+    // 8. ENVIAR RESPOSTA DE SUCESSO
     return res.status(200).json({ 
-      message: 'Imagem gerada com sucesso!', 
+      message: 'Imagem educacional gerada com sucesso!', 
       imageUrl: imageUrl 
     });
 
   } catch (error) {
-    // ... seu tratamento de erro ...
-    console.error("Erro na rota de geração de imagem:", error.response ? error.response.data : error.message);
+    console.error("Erro na rota de geração de imagem:", error.response ? (error.response.data.toString() || error.message) : error.message);
     return res.status(500).json({ message: 'Ocorreu um erro ao gerar a imagem.' });
   }
-
 });
 
 app.get('/api/ia/history', protect, async (req, res) => {

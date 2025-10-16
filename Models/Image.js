@@ -1,26 +1,28 @@
-// models/Image.js
+// Models/Image.js
+
 const mongoose = require('mongoose');
 
 const imageSchema = new mongoose.Schema({
-    imageUrl: {
-        type: String,
-        required: true,
-    },
-    prompt: {
-        type: String,
-        required: true,
-    },
-    // Esta é a parte importante: a ligação com o utilizador
-    user: {
-        type: mongoose.Schema.Types.ObjectId, // Guarda o ID do utilizador
-        ref: 'User', // Cria uma referência ao modelo 'User'
-        required: true,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
+  imageUrl: { type: String, required: true },
+  
+  // O prompt final que foi construído e enviado para a IA
+  prompt: { type: String, required: true },
+  
+  // Nossos novos campos para guardar os "ingredientes" do prompt
+  materia: { type: String, required: true },
+  assunto: { type: String, required: true },
+  prompt_personalizado: { type: String, required: true },
+
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User',
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-const Image = mongoose.model('Image', imageSchema);
+// A única linha de exportação necessária, que é a mais segura.
 module.exports = mongoose.models.Image || mongoose.model('Image', imageSchema);
