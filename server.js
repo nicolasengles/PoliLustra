@@ -155,7 +155,7 @@ app.post('/api/ia/generate', protect, async (req, res) => {
 
     // 8. ENVIAR RESPOSTA DE SUCESSO
     return res.status(200).json({ 
-      message: 'Imagem educacional gerada com sucesso!', 
+      message: 'Imagem gerada com sucesso!', 
       imageUrl: imageUrl 
     });
 
