@@ -37,6 +37,22 @@ app.get('/gerador', (req, res) => {
   res.render('gerador');
 });
 
+app.get('/termos', (req, res) => {
+  res.render('termos');
+});
+
+app.get('/faq', (req, res) => {
+  res.render('faq');
+});
+
+app.get('/historico', (req, res) => {
+  res.render('historico');
+});
+
+app.get('/editar', (req, res) => {
+  res.render('editar');
+});
+
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port} (${process.env.NODE_ENV})`);
 });
