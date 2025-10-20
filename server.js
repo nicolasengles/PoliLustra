@@ -219,11 +219,6 @@ app.delete('/api/ia/history/:id', protect, async (req, res) => {
   }
 });
 
-// Rota Principal
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'html', 'index.html'));
-});
-
 // --- ROTA DE CADASTRO ---
 app.post('/api/users/register', async (req, res) => {
   try {
@@ -414,6 +409,10 @@ app.post('/api/users/logout', (req, res) => {
   });
 
   res.status(200).json({ message: 'Logout bem-sucedido.' });
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // 5. INICIAR O SERVIDOR
