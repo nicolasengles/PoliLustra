@@ -3,20 +3,20 @@
     <%- include('partials/head', {title: 'Início | PoliLustra'}) %>
     <body>
         <%- include('partials/navbar') %>
-        <div id="hero-section" class="d-flex justify-content-around align-items-center text-center vh-90 bg-primary
-        flex-column flex-md-row">
-            <div class="d-flex flex-column justify-content-center align-items-center w-80 w-md-50">
-                <img src="images/logo_hor.png" alt="Logo PoliLustra" class="img-fluid w-100 w-md-50 mb-4">
-                <p class="fs-3">Dê uma cara nova às suas apresentações com imagens geradas por Inteligência Artificial!</p>
-                <div class="d-flex justify-content-center align-items-center w-100 mt-4">
-                    <button class="btn btn-light btn-md border border-dark border-3 mx-1">Log In</button>
-                    <button class="btn btn-danger btn-md border border-dark border-3 mx-1">Criar Conta</button>
+        <div id="hero-section" class="d-flex justify-content-start align-items-center text-center vh-90
+        flex-column flex-md-row hero-section">
+            <div class="d-flex flex-column justify-content-center align-items-center w-50">
+                <img src="images/logo_hor_branco.png" alt="Logo PoliLustra" class="img-fluid w-50">
+                <p class="text-white w-50 fs-4">Dê uma cara nova às suas apresentações com imagens geradas por Inteligência Artificial!</p>
+                <div class="d-flex justify-content-center align-items-center">
+                    <button class="btn btn-light btn-lg border border-dark border-3 mx-1">Log In</button>
+                    <button class="btn btn-danger btn-lg border border-dark border-3 mx-1">Criar Conta</button>
                 </div>
             </div>
-            <div class="h-md-75 w-md-50 w-80 d-flex justify-content-center align-items-center">
+            <!-- <div class="h-md-75 w-md-50 w-80 d-flex justify-content-center align-items-center">
                 <img src="images/einstein.png" alt="Imagem gerada por inteligência artificial de Albert 
                 Einstein utilizando um microscópio." class="img-fluid h-100 rounded">
-            </div>
+            </div> -->
         </div>
         <%- include('partials/footer') %>
     </body>
