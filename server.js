@@ -53,6 +53,14 @@ app.get('/editar', (req, res) => {
   res.render('editar');
 });
 
+app.get('/termos-e-condicoes', (req, res) => {
+  res.render('termos-e-condicoes');
+});
+
+app.get('/politica-de-privacidade', (req, res) => {
+  res.render('politica-de-privacidade');
+});
+
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port} (${process.env.NODE_ENV})`);
 });
