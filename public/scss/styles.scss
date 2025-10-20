@@ -40,37 +40,46 @@
     width: 80% !important;
 }
 
-@media (min-width: map-get($grid-breakpoints, "lg")) {
-    .w-lg-25 {
+@media (min-width: map-get($grid-breakpoints, "md")) {
+    .w-md-25 {
         width: 25% !important;
     }
 
-    .w-lg-35 {
+    .w-md-35 {
         width: 35% !important;
     }
 
-    .w-lg-50 {
+    .w-md-50 {
         width: 50% !important;
     }
 
-    .h-lg-75 {
+    .h-md-75 {
         height: 75% !important;
     }
 
-    .mb-lg-0 {
+    .mb-md-0 {
         margin-bottom: 0 !important;
     }
 
-    .my-lg-0 {
+    .my-md-0 {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
     }
 
-    .me-lg-4 {
+    .mt-md-0 {
+        margin-top: 0 !important;
+    }
+
+    .mx-md-2 {
+        margin-left: .5rem !important;
+        margin-right: .5rem !important;
+    }
+
+    .me-md-4 {
         margin-right: 1.5rem !important;
     }
 
-    .my-lg-7 {
+    .my-md-7 {
         margin-top: 7rem !important;
         margin-bottom: 7rem !important;
     }
