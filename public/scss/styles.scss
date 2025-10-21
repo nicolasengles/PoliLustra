@@ -5,6 +5,8 @@
 :root {
     --bs-primary: #1EB4C3;
     --bs-primary-rgb: 30, 180, 195;
+    --bs-secondary: #FBA41F;
+    --bs-secondary-rgb: 251, 164, 31;
     --bs-body-color: #1B1C20;
     --bs-body-color-rgb: 27, 28, 32;
     --bs-body-bg: #F5F5F5;
@@ -26,6 +28,10 @@
 
 .vh-90 {
     height: 90vh !important;
+}
+
+.w-30 {
+    width: 30% !important;
 }
 
 .w-35 {
@@ -85,13 +91,13 @@
     }
 }
 
-.hero-section {      
+#hero-section {      
     background-image: linear-gradient(
       110deg,
-      #5b5b5b 50%,
+      var(--bs-secondary) 50%,
       transparent 50%
     ),
-    url("/images/placeholder.png");
+    url("/images/placeholder_16_9.png");
     background-size: contain;
     background-position: 100%;
     background-repeat: no-repeat;
