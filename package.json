@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "npm run sass && cross-env NODE_ENV=production node server.js",
+    "dev": "concurrently \"npm run sass:watch\" \"cross-env NODE_ENV=development nodemon server.js\"",
+    "sass": "sass public/scss/styles.scss public/css/styles.css",
+    "sass:watch": "sass --watch public/scss/styles.scss public/css/styles.css"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,7 @@
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/nicolasengles/PoliLustra/issues"
+    "url": "htntps://github.com/nicolasengles/PoliLustra/issues"
   },
   "homepage": "https://github.com/nicolasengles/PoliLustra#readme",
   "dependencies": {
@@ -36,9 +38,14 @@
     "nodemailer": "^7.0.7",
     "openai": "^6.3.0",
     "redis": "^5.8.3",
-    "router": "^2.2.0"
+    "router": "^2.2.0",
+    "sass": "^1.93.2"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
+    "connect-livereload": "^0.6.1",
+    "cross-env": "^10.1.0",
+    "livereload": "^0.10.3",
     "nodemon": "^3.1.10"
   }
 }

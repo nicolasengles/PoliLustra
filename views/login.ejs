@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('partials/head', {title: 'Login | PoliLustra'}) %>
+    <body>
+        <%- include('partials/navbar') %>
+        <div class="d-flex justify-content-center align-items-center vh-90">
+            <div class="bg-white p-5 rounded-4 shadow text-center login-box mx-auto w-80 w-md-35 mt-3"> 
+                <h1 class="mb-4 login-title">Login</h1>
+                <form>
+                    <div class="mb-3">
+                        <input type="email" class="form-control custom-input" placeholder="Email @sistemapoliedro.com ou @p4ed"
+                        required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control custom-input" placeholder="Senha" required>
+                    </div>
+                    <div class="mb-4">
+                        <a href="#" class="forgot-password-link">Esqueceu sua Senha?</a>
+                    </div>
+                    <button type="submit" class="btn btn-light btn-md border border-dark border-3">Log In</button>
+                </form>  
+            </div>
+        </div>
+        <%- include('partials/footer') %>
+    </body>
+</html>

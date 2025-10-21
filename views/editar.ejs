@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<%- include('partials/head', {title: 'Editor | Poliustra'}) %>
+
+<body class="d-flex flex-column min-vh-100"> 
+
+<%- include('partials/navbar') %>
+
+<div class="flex-grow-1"> 
+    <div class="container mt-5">
+        
+        <div class="card shadow-md p-4">
+            
+            <div class="row align-items-start">
+                
+                <div class="col-12 col-md-6 mb-4 mb-md-0">
+                    <div class="image-frame p-2 border rounded shadow-sm">
+                        <img src="URL_DA_IMAGEM_PARA_EDITAR" class="img-fluid rounded" alt="Imagem sendo editada" style="max-height: 400px; width: 100%; object-fit: cover;">
+                        </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    
+                    <h2 class="display-6 fw-bold">Editor de Imagens</h2>
+                    <h3 class="h4 text-muted mb-3">Descreva as Alterações:</h3>
+                    
+                    <p class="text-secondary small">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium odio id libero aliquam sodales. Ut ornare sodales ipsum sed feugiat. In placerat lacus ut eros suscipit, et varius quam tempor. Fusce id feugiat arcu. Fusce vestibulum ac metus sed tempor. Nullam cursus erat eu erat vestibulum porta. Praesent tincidunt, urna ut vehicula aliquam, arcu massa egestas augue, id laoreet orci purus eu diam. Phasellus hendrerit lectus elit, ut ornare risus pulvinar sed. Pellentesque efficitur libero sed ultrices varius. Fusce euismod dui non libero posuere tristique in ac dolor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras ac luctus augue. Morbi sed enim eu risus convallis molestie. Fusce sagittis tortor convallis fringilla sodales. Praesent congue tempus euismod.
+                    </p>
+                    
+                    <p class="text-danger small mt-4">
+                        AVISO: Devido a limitações do Gemini, as imagens editadas podem não ser fiéis à original.
+                    </p>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn btn-outline-dark btn-md px-5">Editar</button>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+        </div>
+</div>
+<%- include('partials/footer') %>
+
+</body>
+</html>

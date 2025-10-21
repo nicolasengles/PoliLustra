@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<%- include('partials/head', {title: 'Histórico | Poliustra'}) %>
+
+<body class="d-flex flex-column min-vh-100"> 
+
+<%- include('partials/navbar') %>
+
+<div class="flex-grow-1"> 
+
+    <div class="container mt-4">
+
+        <h1 class="text-center mb-5">Histórico</h1>
+
+        <div class="d-flex flex-wrap justify-content-center">
+
+            <div class="card shadow-sm mx-3 mb-4" style="width: 250px;">
+                <img src="URL_DA_IMAGEM_1" class="card-img-top" alt="Descrição 1" style="height: 250px; object-fit: cover;">
+                <div class="card-body text-center d-flex justify-content-around p-2">
+                    <button class="btn btn-danger btn-md w-45">Excluir</button>
+                    <button class="btn btn-info btn-md w-45">Editar</button>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm mx-3 mb-4" style="width: 250px;">
+                <img src="URL_DA_IMAGEM_2" class="card-img-top" alt="Descrição 2" style="height: 250px; object-fit: cover;">
+                <div class="card-body text-center d-flex justify-content-around p-2">
+                    <button class="btn btn-danger btn-md w-45">Excluir</button>
+                    <button class="btn btn-info btn-md w-45">Editar</button>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mx-3 mb-4" style="width: 250px;">
+                <img src="URL_DA_IMAGEM_3" class="card-img-top" alt="Descrição 3" style="height: 250px; object-fit: cover;">
+                <div class="card-body text-center d-flex justify-content-around p-2">
+                    <button class="btn btn-danger btn-md w-45">Excluir</button>
+                    <button class="btn btn-info btn-md w-45">Editar</button>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mx-3 mb-4" style="width: 250px;">
+                <img src="URL_DA_IMAGEM_4" class="card-img-top" alt="Descrição 4" style="height: 250px; object-fit: cover;">
+                <div class="card-body text-center d-flex justify-content-around p-2">
+                    <button class="btn btn-danger btn-md w-45">Excluir</button>
+                    <button class="btn btn-info btn-md w-45">Editar</button>
+                </div>
+            </div>
+            
+            </div>
+        </div>
+    </div>
+<%- include('partials/footer') %>
+
+</body>
+</html>
