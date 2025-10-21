@@ -58,11 +58,65 @@ app.use('/styles', express.static(path.join(__dirname, 'styles')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
 
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 // 4. ROTAS DA APLICAÇÃO
 
 // API IA Stable core requisições
 
 // server.js
+
+// ROTAS DAS PÁGINAS DO SERVIDOR
+app.get('/', (req, res) => {
+  // 'index' refere-se ao arquivo 'views/index.ejs'
+  // Você não precisa mais do path.join ou da extensão .ejs
+  res.render('index'); 
+});
+
+app.get('/configuracoes', (req, res) => {
+  res.render('configuracoes');
+});
+
+app.get('/editar', (req, res) => {
+  res.render('editar', {
+    user: req.user
+  });
+});
+
+app.get('/faq', (req, res) => {
+  res.render('faq');
+});
+
+app.get('/gerador', (req, res) => {
+  res.render('gerador', {
+    user: req.user
+  });
+});
+
+app.get('/historico', protect, (req, res) => {
+  res.render('historico', {
+    user: req.user
+  });
+});
+
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+app.get('/register', (req, res) => {
+  res.render('register');
+});
+
+app.get('/sobre', (req, res) => {
+  res.render('sobre');
+});
+
+app.get('/termos', (req, res) => {
+  res.render('termos');
+});
+
+// ROTAS DA API
 
 app.post('/api/ia/generate', protect, async (req, res) => {
   try {
@@ -217,11 +271,6 @@ app.delete('/api/ia/history/:id', protect, async (req, res) => {
     console.error("Erro ao deletar imagem:", error.message);
     return res.status(500).json({ message: 'Ocorreu um erro interno ao deletar a imagem.' });
   }
-});
-
-// Rota Principal
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'html', 'index.html'));
 });
 
 // --- ROTA DE CADASTRO ---
