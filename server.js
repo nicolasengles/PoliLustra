@@ -67,10 +67,8 @@ app.set('views', path.join(__dirname, 'views'));
 
 // server.js
 
-// ROTAS DAS PÁGINAS DO SERVIDOR
+// ROTAS DAS PÁGINAS 
 app.get('/', (req, res) => {
-  // 'index' refere-se ao arquivo 'views/index.ejs'
-  // Você não precisa mais do path.join ou da extensão .ejs
   res.render('index'); 
 });
 
@@ -463,10 +461,6 @@ app.post('/api/users/logout', (req, res) => {
   });
 
   res.status(200).json({ message: 'Logout bem-sucedido.' });
-});
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // 5. INICIAR O SERVIDOR
