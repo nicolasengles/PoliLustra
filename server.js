@@ -114,6 +114,10 @@ app.get('/termos-e-condicoes', (req, res) => {
   res.render('termos-e-condicoes');
 });
 
+app.get('/contato', (req, res) => {
+  res.render('contato');
+});
+
 // ROTAS DA API
 
 app.post('/api/ia/generate', protect, async (req, res) => {
