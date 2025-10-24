@@ -110,8 +110,8 @@ app.get('/sobre', (req, res) => {
   res.render('sobre');
 });
 
-app.get('/termos', (req, res) => {
-  res.render('termos');
+app.get('/termos-e-condicoes', (req, res) => {
+  res.render('termos-e-condicoes');
 });
 
 app.get('/contato', (req, res) => {
