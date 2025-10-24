@@ -86,7 +86,7 @@ app.get('/faq', (req, res) => {
   res.render('faq');
 });
 
-app.get('/gerador', (req, res) => {
+app.get('/gerador', protect, (req, res) => {
   res.render('gerador', {
     user: req.user
   });
@@ -293,6 +293,54 @@ app.post('/api/users/register', async (req, res) => {
     await user.save();
 
     res.status(201).json({ message: 'Utilizador registado com sucesso!' });
+  } catch (error) {
+    console.error('Erro no registo:', error);
+    res.status(500).json({ message: 'Erro interno do servidor.' });
+  }
+});
+
+// --- ROTA DE CADASTRO (NOVA COM LOGIN AUTOMÁTICO) ---
+app.post('/api/users/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Por favor, preencha todos os campos.' });
+    }
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: 'Este e-mail já está a ser utilizado.' });
+    }
+
+    // 1. O usuário é criado e salvo
+    const user = new User({ name, email, password });
+    await user.save();
+
+    // 2. Se o usuário foi criado com sucesso...
+    if (user) {
+      // 3. Geramos o token para ele (copiado da sua rota de login)
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: '30d',
+      });
+
+      // 4. Definimos o cookie de autenticação
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
+      });
+
+      // 5. Enviamos os dados do usuário (status 201 - Created)
+      res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      });
+    } else {
+      res.status(400).json({ message: 'Dados de utilizador inválidos.' });
+    }
   } catch (error) {
     console.error('Erro no registo:', error);
     res.status(500).json({ message: 'Erro interno do servidor.' });

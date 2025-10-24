@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 6. SUCESSO: Login bem-sucedido
                 // O backend criou o cookie de autenticação.
                 // Agora, redirecionamos o usuário para o painel.
-                window.location.href = '/dashboard'; // Ou '/perfil', ou qualquer página protegida
+                window.location.href = '/gerador'; // Ou '/perfil', ou qualquer página protegida
             } else {
                 // 7. ERRO: Exibe a mensagem de erro vinda da API
                 // (ex: "E-mail ou senha inválidos.")
