@@ -138,7 +138,7 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-# Arquivos CSS (executar "npm run sass" antes de iniciar o servidor)
+# Arquivos CSS (Serão criados a partir dos arquivos SCSS)
 **/css/
 *.css
 *.css.map

@@ -15,25 +15,39 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="/gerador">Gerador de Imagens</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link text-dark" href="/contato">Contato</a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="/sobre">Sobre Nós</a>
                 </li>
             </ul>
             <hr class="d-md-none">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="/login">Login</a>
-                </li>
-                <li class="nav-item d-none d-md-block">
-                    <a class="nav-link text-dark disabled">/</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="/register">Cadastrar</a>
-                </li>
-            </ul>
+            <% if (currentUser) { %>
+                <div class="dropdown ms-auto">
+                    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <%= currentUser.name %>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <!-- <li><a class="dropdown-item" href="/historico">Histórico</a></li> -->
+                        <!-- <li><a class="dropdown-item" href="/configuracoes">Configurações</a></li> -->
+                        <li><a class="dropdown-item" href="#" onclick="logout()">Sair</a></li>
+                    </ul>
+                </div>
+            <% } else { %>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item d-none d-md-block">
+                        <a class="nav-link text-dark disabled">/</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/register">Cadastrar</a>
+                    </li>
+                </ul>
+            <% } %>
         </div>
     </div>
 </nav>
+<script src="js/navbar.js"></script>

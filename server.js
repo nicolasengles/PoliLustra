@@ -6,8 +6,8 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs'); // Necessário para a função de login
-const jwt = require('jsonwebtoken'); // Necessário para a função de login
-const cookieParser = require('cookie-parser'); // <-- Adicionado
+// const jwt = require('jsonwebtoken'); // Necessário para a função de login
+// const cookieParser = require('cookie-parser'); // <-- Adicionado
 const crypto = require('crypto');
 const nodemailer = require('nodemailer'); // <-- ADICIONE ESTA LINHA
 const Image = require('./Models/Image');
@@ -45,7 +45,7 @@ connectDB();
 // 3. MIDDLEWARE
 app.use(express.urlencoded({ extended: true })); // Para formulários HTML
 app.use(express.json()); // Para receber JSON
-app.use(cookieParser()); // <-- Adicionado para gerir cookies
+// app.use(cookieParser()); // <-- Adicionado para gerir cookies
 
 app.use(cors({
   origin: true, // Permite que qualquer origem envie cookies (bom para desenvolvimento)
@@ -61,6 +61,18 @@ app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstra
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+const session = require('express-session');
+app.use(session({
+  secret: ';hnodawhd;ouawhd;oiawbh;foawh',
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.session.user || null;
+  next();
+});
+
 // 4. ROTAS DA APLICAÇÃO
 
 // API IA Stable core requisições
@@ -69,17 +81,15 @@ app.set('views', path.join(__dirname, 'views'));
 
 // ROTAS DAS PÁGINAS 
 app.get('/', (req, res) => {
-  res.render('index'); 
+  res.render('index');
 });
 
-app.get('/configuracoes', (req, res) => {
+app.get('/configuracoes', protect, (req, res) => {
   res.render('configuracoes');
 });
 
 app.get('/editar', (req, res) => {
-  res.render('editar', {
-    user: req.user
-  });
+  res.render('editar');
 });
 
 app.get('/faq', (req, res) => {
@@ -87,15 +97,11 @@ app.get('/faq', (req, res) => {
 });
 
 app.get('/gerador', protect, (req, res) => {
-  res.render('gerador', {
-    user: req.user
-  });
+  res.render('gerador');
 });
 
 app.get('/historico', protect, (req, res) => {
-  res.render('historico', {
-    user: req.user
-  });
+  res.render('historico');
 });
 
 app.get('/login', (req, res) => {
@@ -114,9 +120,15 @@ app.get('/termos-e-condicoes', (req, res) => {
   res.render('termos-e-condicoes');
 });
 
-app.get('/contato', (req, res) => {
-  res.render('contato');
+app.get('/checksession', (req, res) => {
+  res.send(req.session);
 });
+
+// app.get('/contato', (req, res) => {
+//   res.render('contato', {
+//     user: req.user
+//   });
+// });
 
 // ROTAS DA API
 
@@ -276,28 +288,28 @@ app.delete('/api/ia/history/:id', protect, async (req, res) => {
 });
 
 // --- ROTA DE CADASTRO ---
-app.post('/api/users/register', async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
+// app.post('/api/users/register', async (req, res) => {
+//   try {
+//     const { name, email, password } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Por favor, preencha todos os campos.' });
-    }
+//     if (!name || !email || !password) {
+//       return res.status(400).json({ message: 'Por favor, preencha todos os campos.' });
+//     }
 
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      return res.status(400).json({ message: 'Este e-mail já está a ser utilizado.' });
-    }
+//     const userExists = await User.findOne({ email });
+//     if (userExists) {
+//       return res.status(400).json({ message: 'Este e-mail já está a ser utilizado.' });
+//     }
 
-    const user = new User({ name, email, password });
-    await user.save();
+//     const user = new User({ name, email, password });
+//     await user.save();
 
-    res.status(201).json({ message: 'Utilizador registado com sucesso!' });
-  } catch (error) {
-    console.error('Erro no registo:', error);
-    res.status(500).json({ message: 'Erro interno do servidor.' });
-  }
-});
+//     res.status(201).json({ message: 'Utilizador registado com sucesso!' });
+//   } catch (error) {
+//     console.error('Erro no registo:', error);
+//     res.status(500).json({ message: 'Erro interno do servidor.' });
+//   }
+// });
 
 // --- ROTA DE CADASTRO (NOVA COM LOGIN AUTOMÁTICO) ---
 app.post('/api/users/register', async (req, res) => {
@@ -310,7 +322,7 @@ app.post('/api/users/register', async (req, res) => {
 
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ message: 'Este e-mail já está a ser utilizado.' });
+      return res.status(400).json({ message: 'Este e-mail já está sendo utilizado.' });
     }
 
     // 1. O usuário é criado e salvo
@@ -320,17 +332,23 @@ app.post('/api/users/register', async (req, res) => {
     // 2. Se o usuário foi criado com sucesso...
     if (user) {
       // 3. Geramos o token para ele (copiado da sua rota de login)
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: '30d',
-      });
+      // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      //   expiresIn: '30d',
+      // });
 
       // 4. Definimos o cookie de autenticação
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
-      });
+      // res.cookie('token', token, {
+      //   httpOnly: true,
+      //   secure: process.env.NODE_ENV === 'production',
+      //   sameSite: 'strict',
+      //   maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
+      // });
+
+      req.session.user = { 
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      };
 
       // 5. Enviamos os dados do usuário (status 201 - Created)
       res.status(201).json({
@@ -355,17 +373,23 @@ app.post('/api/users/login', async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: '30d',
-      });
+      // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      //   expiresIn: '30d',
+      // });
+
+      req.session.user = { 
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      };
 
       // Define o token num cookie seguro em vez de o enviar no corpo da resposta
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
-      });
+      // res.cookie('token', token, {
+      //   httpOnly: true,
+      //   secure: process.env.NODE_ENV === 'production',
+      //   sameSite: 'strict',
+      //   maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
+      // });
 
       // Envia apenas os dados públicos do utilizador de volta
       res.status(200).json({
@@ -373,6 +397,7 @@ app.post('/api/users/login', async (req, res) => {
         name: user.name,
         email: user.email,
       });
+      
     } else {
       res.status(401).json({ message: 'E-mail ou senha inválidos.' });
     }
@@ -504,15 +529,31 @@ app.put('/api/users/profile', protect, async (req, res) => {
   }
 });
 
-app.post('/api/users/logout', (req, res) => {
+app.post('/api/users/logout', (req, res, next) => {
   // A forma de "apagar" um cookie é enviá-lo novamente com um valor vazio
   // e uma data de expiração no passado.
-  res.cookie('token', '', {
-    httpOnly: true,
-    expires: new Date(0), // Define a expiração para o início dos tempos (imediatamente)
+  // res.cookie('token', '', {
+  //   httpOnly: true,
+  //   expires: new Date(0), // Define a expiração para o início dos tempos (imediatamente)
+  // });
+
+  req.session.destroy(err => {
+    if (err) {
+      // If there's an error destroying the session,
+      // pass it to the error handler
+      return next(err); 
+    }
+
+    // --- Put ALL response logic INSIDE the callback ---
+
+    // 1. Clear the session cookie. 'connect.sid' is the default name.
+    res.clearCookie('connect.sid'); 
+    
+    // 2. Redirect the user to the homepage.
+    res.status(200).json({ redirectUrl: '/' });
   });
 
-  res.status(200).json({ message: 'Logout bem-sucedido.' });
+  // res.status(200).json({ message: 'Logout bem-sucedido.' });
 });
 
 // 5. INICIAR O SERVIDOR

@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 // 6. SUCESSO!
                 // O backend já fez o login e 'data' agora contém os dados do usuário
-                successMessageDiv.textContent = `Bem-vindo, ${data.name}! Redirecionando para o painel...`;
+                // successMessageDiv.textContent = `Bem-vindo, ${data.name}! Redirecionando para o painel...`;
                 
                 // Não precisa mais limpar o formulário, pois a página vai mudar
                 

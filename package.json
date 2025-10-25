@@ -32,6 +32,7 @@
     "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "express-session": "^1.18.2",
     "FormData": "^0.10.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.1",
