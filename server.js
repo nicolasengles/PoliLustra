@@ -136,8 +136,9 @@ app.post('/api/ia/generate', protect, async (req, res) => {
   try {
     // 1. RECEBER OS CAMPOS ESTRUTURADOS DO CORPO DA REQUISIÇÃO
     const { 
-      materia, 
-      assunto, 
+      materia,
+      assunto,
+      estilo,
       prompt_personalizado, 
       output_format = 'webp', 
       negative_prompt = '' 
@@ -151,7 +152,8 @@ app.post('/api/ia/generate', protect, async (req, res) => {
 
     // 3. CONSTRUÇÃO DO PROMPT FINAL
     // Criamos um prompt descritivo a partir das peças, otimizado para a IA.
-    const finalPrompt = `Imagem educacional para uma aula de ${materia} sobre ${assunto}. A cena deve ilustrar vividamente "${prompt_personalizado}". Estilo de arte digital, detalhado, cinematográfico e claro.`;
+    // const finalPrompt = `Imagem educacional para uma aula de ${materia} sobre ${assunto}. A cena deve ilustrar vividamente "${prompt_personalizado}". Estilo de arte digital, detalhado, cinematográfico e claro.`;
+    const finalPrompt = `Imagem educacional para uma aula de ${materia} sobre ${assunto}. A cena deve ilustrar vividamente "${prompt_personalizado}". Estilo de arte tipo ${estilo}.`;
     
     console.log(`Prompt Construído: "${finalPrompt}"`);
 

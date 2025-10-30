@@ -4,37 +4,32 @@
     <body>
         <%- include('partials/navbar') %>
         <div class="d-flex justify-content-center align-items-center vh-90">
-            <div class="bg-white p-5 rounded-4 shadow text-center cadastro-box mx-auto w-80 w-md-35 mt-3">      
+            <div class="bg-white p-5 rounded-4 shadow text-center cadastro-box mx-auto w-80 w-md-35 mt-4">      
                 <h1 class="mb-4 cadastro-title">Cadastro</h1>
-                
                 <form id="register-form">
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <input type="text" class="form-control custom-input" placeholder="Nome Completo" required id="name-input">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <input type="email" class="form-control custom-input" placeholder="Email @sistemapoliedro.com ou @p4ed" required id="email-input">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <input type="email" class="form-control custom-input" placeholder="Confirme seu Email" required id="email-confirm-input">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <input type="password" class="form-control custom-input" placeholder="Senha" required id="password-input">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <input type="password" class="form-control custom-input" placeholder="Confirme sua Senha" required id="password-confirm-input">
                     </div>
-                    
                     <div class="termos-container">
                         <input type="checkbox" id="aceite-termos" name="aceite-termos" required>
-                        <label for="aceite-termos">
+                        <label for="aceite-termos" class="mb-4">
                             Aceito os <a href="/termos-e-condicoes" target="_blank">Termos e Condições</a>
                         </label>
                     </div>
-
-                    <div id="error-message" class="text-danger mt-3"></div>
-                    <div id="success-message" class="text-success mt-3"></div>
-                    
-                    <button type="submit" class="btn btn-light btn-md border border-dark border-3 mt-3">Registrar</button>
+                    <div class="alert alert-danger mb-4 d-none"></div>
+                    <button type="submit" class="btn btn-light btn-md border border-dark border-3">Registrar</button>
                 </form>
             </div>
         </div>

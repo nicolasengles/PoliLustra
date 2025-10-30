@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run sass && cross-env NODE_ENV=production node server.js",
-    "dev": "concurrently \"npm run sass:watch\" \"cross-env NODE_ENV=development nodemon server.js\"",
+    "dev": "concurrently \"npm run sass:watch\" \"cross-env NODE_ENV=development nodemon --ignore 'public/*' server.js \"",
     "sass": "sass public/scss/styles.scss public/css/styles.css",
     "sass:watch": "sass --watch public/scss/styles.scss public/css/styles.css"
   },
