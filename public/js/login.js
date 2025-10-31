@@ -5,16 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const emailInput = document.getElementById('email-input');
     const passwordInput = document.getElementById('password-input');
-    const errorMessageDiv = document.getElementById('error-message');
 
     // 2. Adiciona um "ouvinte" para o evento de 'submit' do formulário
     loginForm.addEventListener('submit', async (event) => {
         
         // 3. Previne o comportamento padrão (que é recarregar a página)
         event.preventDefault(); 
-
-        // Limpa mensagens de erro antigas
-        errorMessageDiv.textContent = '';
 
         // 4. Pega os valores dos inputs
         const email = emailInput.value;
@@ -40,13 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 // 7. ERRO: Exibe a mensagem de erro vinda da API
                 // (ex: "E-mail ou senha inválidos.")
-                errorMessageDiv.textContent = data.message;
+                alert(data.message);
             }
 
         } catch (error) {
             // 8. ERRO DE REDE: O servidor pode estar offline
             console.error('Erro ao tentar fazer login:', error);
-            errorMessageDiv.textContent = 'Erro de conexão. Tente novamente mais tarde.';
+            alert('Erro de conexão. Tente novamente mais tarde.');
         }
     });
 });

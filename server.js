@@ -101,7 +101,7 @@ app.get('/gerador', protect, (req, res) => {
 });
 
 app.get('/historico', protect, (req, res) => {
-  res.render('historico');
+  res.render('historico', );
 });
 
 app.get('/login', (req, res) => {
