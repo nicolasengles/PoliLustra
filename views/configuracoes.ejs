@@ -3,60 +3,50 @@
     <%- include('partials/head', {title: 'Configurações | PoliLustra'}) %>
     <body>
         <%- include('partials/navbar') %>
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-3 pt-5"> 
-                    <button class="btn btn-outline-dark rounded-3 w-50 mb-4">Voltar</button>
-                    <button class="btn btn-outline-dark rounded-3 w-50 mb-3">Conta</button>
-                    <button class="btn btn-outline-dark rounded-3 w-50 mb-3">Aparência</button>
-                    <button class="btn btn-outline-dark rounded-3 w-50 mb-3">Acessibilidade</button>
+        <div class="d-flex flex-column m-5">
+            <h1 class="mb-5">Configurações</h1> 
+            <h2>Conta</h2>
+            <hr>
+            <div class="row mb-4">
+                <div class="col-7">
+                    <p class="mb-0">Nome: <%= currentUser.name %></p>
                 </div>
-                <div class="col-9"> 
-                    <h1 class="mb-5">Configurações</h1> 
-                    <h2>Conta</h2>
-                    <hr>
-                    <div class="row mb-4">
-                        <div class="col-7">
-                            <p class="mb-0">Nome: <%= currentUser.name %></p>
-                        </div>
-                        <div class="col-5 text-end">
-                            <button class="btn btn-outline-dark rounded-3">Alterar Nome e Sobrenome</button>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mb-4">
-                        <div class="col-7">
-                            <p class="mb-0">Email: <%= currentUser.email %></p>
-                        </div>
-                        <div class="col-5 text-end">
-                            <button class="btn btn-outline-dark rounded-3">Alterar Email</button>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mb-5">
-                        <div class="col-7">
-                            <p class="mb-0">Senha: **********</p>
-                        </div>
-                        <div class="col-5 text-end">
-                            <button class="btn btn-outline-dark rounded-3">Alterar Senha</button>
-                        </div>
-                    </div>
-                    <h2>Sistema</h2>
-                    <hr>
-                    <div class="row align-items-center mb-4">
-                        <div class="col-7">
-                            <p class="mb-0">Sair de todas as sessões</p>
-                        </div>
-                        <div class="col-5 text-end">
-                            <button class="btn btn-outline-dark rounded-3">Sair de todos os pontos</button>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mb-4">
-                        <div class="col-7">
-                            <p class="mb-0">Apagar Conta</p>
-                        </div>
-                        <div class="col-5 text-end">
-                            <button class="btn btn-outline-dark rounded-3">Apagar Conta</button>
-                        </div>
-                    </div>
+                <div class="col-5 text-end">
+                    <button class="btn btn-outline-dark rounded-3">Alterar Nome</button>
+                </div>
+            </div>
+            <div class="row align-items-center mb-4">
+                <div class="col-7">
+                    <p class="mb-0">Email: <%= currentUser.email %></p>
+                </div>
+                <div class="col-5 text-end">
+                    <button class="btn btn-outline-dark rounded-3">Alterar Email</button>
+                </div>
+            </div>
+            <div class="row align-items-center mb-5">
+                <div class="col-7">
+                    <p class="mb-0">Senha</p>
+                </div>
+                <div class="col-5 text-end">
+                    <button class="btn btn-outline-dark rounded-3">Alterar Senha</button>
+                </div>
+            </div>
+            <h2>Sistema</h2>
+            <hr>
+            <div class="row align-items-center mb-4">
+                <div class="col-7">
+                    <p class="mb-0">Sair de todas as sessões</p>
+                </div>
+                <div class="col-5 text-end">
+                    <button class="btn btn-outline-dark rounded-3">Sair de todos os pontos</button>
+                </div>
+            </div>
+            <div class="row align-items-center mb-4">
+                <div class="col-7">
+                    <p class="mb-0">Apagar Conta</p>
+                </div>
+                <div class="col-5 text-end">
+                    <button class="btn btn-danger btn-outline-dark rounded-3">Apagar Conta</button>
                 </div>
             </div>
         </div>
