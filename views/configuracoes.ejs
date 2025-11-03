@@ -5,49 +5,125 @@
         <%- include('partials/navbar') %>
         <div class="d-flex flex-column m-5">
             <h1 class="mb-5">Configurações</h1> 
-            <h2>Conta</h2>
-            <hr>
             <div class="row mb-4">
                 <div class="col-7">
-                    <p class="mb-0">Nome: <%= currentUser.name %></p>
+                    <p class="mb-0">Nome: <span class="fw-bold"><%= currentUser.name %></span></p>
                 </div>
                 <div class="col-5 text-end">
-                    <button class="btn btn-outline-dark rounded-3">Alterar Nome</button>
+                    <button id="alterar-nome-btn" class="btn btn-outline-dark rounded-3" data-bs-toggle="modal" data-bs-target="#alterar-nome-modal">Alterar Nome</button>
                 </div>
             </div>
-            <div class="row align-items-center mb-4">
+            <hr>
+            <div class="row align-items-center my-3">
                 <div class="col-7">
-                    <p class="mb-0">Email: <%= currentUser.email %></p>
+                    <p class="mb-0">Email: <span class="fw-bold"><%= currentUser.email %></span></p>
                 </div>
                 <div class="col-5 text-end">
-                    <button class="btn btn-outline-dark rounded-3">Alterar Email</button>
+                    <button id="alterar-email-btn" class="btn btn-outline-dark rounded-3" data-bs-toggle="modal" data-bs-target="#alterar-email-modal">Alterar Email</button>
                 </div>
             </div>
-            <div class="row align-items-center mb-5">
+            <hr>
+            <div class="row align-items-center my-3">
                 <div class="col-7">
                     <p class="mb-0">Senha</p>
                 </div>
                 <div class="col-5 text-end">
-                    <button class="btn btn-outline-dark rounded-3">Alterar Senha</button>
+                    <button id="alterar-senha-btn" class="btn btn-outline-dark rounded-3" data-bs-toggle="modal" data-bs-target="#alterar-senha-modal">Alterar Senha</button>
                 </div>
             </div>
-            <h2>Sistema</h2>
             <hr>
-            <div class="row align-items-center mb-4">
-                <div class="col-7">
-                    <p class="mb-0">Sair de todas as sessões</p>
-                </div>
-                <div class="col-5 text-end">
-                    <button class="btn btn-outline-dark rounded-3">Sair de todos os pontos</button>
-                </div>
-            </div>
-            <div class="row align-items-center mb-4">
+            <div class="row align-items-center my-3">
                 <div class="col-7">
                     <p class="mb-0">Apagar Conta</p>
                 </div>
                 <div class="col-5 text-end">
-                    <button class="btn btn-danger btn-outline-dark rounded-3">Apagar Conta</button>
+                    <button id="apagar-conta-btn" class="btn btn-danger text-white rounded-3" data-bs-toggle="modal" data-bs-target="#apagar-conta-modal">Apagar Conta</button>
                 </div>
+            </div>
+        </div>
+        <div class="modal fade" id="alterar-nome-modal" tabindex="-1" aria-labelledby="alterar-nome-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="alterar-nome-modal-label">Alterar Nome</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Nome Atual: <span class="fw-bold"><%= currentUser.name %></span></p>
+                    <form id="form-alterar-nome" class="d-flex flex-column">
+                        <label for="alterar-nome-input" class="form-label">Novo Nome:</label>
+                        <input id="alterar-nome-input" class="form-control mb-2" type="text">
+                        <label for="alterar-nome-input" class="form-label">Senha:</label>
+                        <input id="alterar-nome-senha-input" class="form-control mb-2" type="password">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary">Alterar Nome</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal fade" id="alterar-email-modal" tabindex="-1" aria-labelledby="alterar-email-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="alterar-email-modal-label">Alterar Email</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Email Atual: <span class="fw-bold"><%= currentUser.email %></span></p>
+                    <form id="form-alterar-email" class="d-flex flex-column">
+                        <label for="alterar-email-input" class="form-label">Novo Email:</label>
+                        <input id="alterar-email-input" class="form-control mb-2" type="email">
+                        <label for="alterar-email-input-confirmar" class="form-label">Confirmar Novo Email:</label>
+                        <input id="alterar-email-input-confirmar" class="form-control mb-2" type="email">
+                        <label for="alterar-email-input" class="form-label">Senha:</label>
+                        <input id="alterar-email-senha-input" class="form-control mb-2" type="password">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary">Alterar Email</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal fade" id="alterar-senha-modal" tabindex="-1" aria-labelledby="alterar-senha-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="alterar-senha-modal-label">Alterar Senha</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="form-alterar-senha" class="d-flex flex-column">
+                        <label for="senha-atual-input" class="form-label">Senha Atual:</label>
+                        <input id="senha-atual-input" class="form-control mb-2" type="password">
+                        <label for="alterar-senha-input" class="form-label">Nova senha:</label>
+                        <input id="alterar-senha-input" class="form-control mb-2" type="password">
+                        <label for="alterar-senha-input-confirmar" class="form-label">Confirmar Nova Senha:</label>
+                        <input id="alterar-senha-senha-input-confirmar" class="form-control mb-2" type="password">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-danger text-white">Alterar Senha</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal fade" id="apagar-conta-modal" tabindex="-1" aria-labelledby="apagar-conta-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="apagar-conta-modal-label">Apagar Conta</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Você tem certeza que deseja apagar a sua conta?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-danger text-white">Apagar Conta</button>
+                </div>
+              </div>
             </div>
         </div>
         <%- include('partials/footer') %>
