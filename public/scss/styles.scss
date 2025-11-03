@@ -26,7 +26,9 @@ $body-bg: #F5F5F5;
     --bs-navbar-color: var(--bs-body-color);
 }
 
+// 1. O 'body' precisa ser o "container" de referência
 body {
+    position: relative; // Essencial para o 'position: absolute' do #vanta-bg
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -112,3 +114,17 @@ textarea {
     background-position: 100%;
     background-repeat: no-repeat;
   }
+
+// ==================================================
+// == ADIÇÃO PARA O FUNDO VANTA.JS (VERSÃO 'ABSOLUTE' QUE ROLA) ==
+// ==================================================
+
+// 2. O 'vanta-bg' se estica para preencher o 'body'
+#vanta-bg {
+    position: absolute;  // Corrigido de 'fixed' para 'absolute'
+    top: 0;
+    left: 0;
+    width: 100%;       
+    bottom: 0;         // Estica até o fim do 'body'
+    z-index: -1;       // Fica atrás de tudo
+}
