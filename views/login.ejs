@@ -2,9 +2,12 @@
 <html lang="pt-BR">
     <%- include('partials/head', {title: 'Login | PoliLustra'}) %>
     <body>
+        <div id="vanta-bg"></div>
+
         <%- include('partials/navbar') %>
-        <div class="d-flex justify-content-center align-items-center vh-90">
-            <div class="bg-white p-5 rounded-4 shadow text-center login-box mx-auto w-80 w-md-35 mt-3"> 
+
+        <div class="d-flex justify-content-center align-items-center flex-grow-1">
+            <div class="bg-white p-5 rounded-4 shadow text-center login-box mx-auto w-80 w-md-35 mt-4"> 
                 <h1 class="mb-4 login-title">Login</h1>
                 <form id="login-form">
                     <div class="mb-3">
@@ -22,8 +25,30 @@
                 </form>  
             </div>
         </div>
+
         <%- include('partials/footer') %>
         
         <script src="/js/login.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+        
+        <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+        
+        <script>
+            VANTA.GLOBE({
+                el: "#vanta-bg",
+                mouseControls: false,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0xfba41f,         // Cor das linhas/pontos ($secondary)
+                color2: 0x1e75c3,        // Cor do globo ($primary)
+                backgroundColor: 0xFAFAFA, // Cor do fundo ($dark)
+                size: 1.20
+            });
+        </script>
     </body>
 </html>

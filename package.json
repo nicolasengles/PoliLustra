@@ -41,7 +41,8 @@
     "package.json": "^2.0.1",
     "redis": "^5.8.3",
     "router": "^2.2.0",
-    "sass": "^1.93.2"
+    "sass": "^1.93.2",
+    "session": "^0.1.0"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

@@ -570,6 +570,7 @@
 }
 
 body {
+  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -639,6 +640,15 @@ textarea {
   background-size: contain;
   background-position: 100%;
   background-repeat: no-repeat;
+}
+
+#vanta-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  z-index: -1;
 }
 
 /*# sourceMappingURL=styles.css.map */
