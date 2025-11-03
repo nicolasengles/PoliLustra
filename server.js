@@ -124,6 +124,10 @@ app.get('/checksession', (req, res) => {
   res.send(req.session);
 });
 
+app.get('/politica-de-privacidade', (req, res) => {
+  res.render('politica-de-privacidade');
+});
+
 // app.get('/contato', (req, res) => {
 //   res.render('contato', {
 //     user: req.user
