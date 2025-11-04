@@ -535,6 +535,51 @@ app.put('/api/users/profile', protect, async (req, res) => {
   }
 });
 
+app.put('/api/users/alterar-nome', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    
+    if (await user.matchPassword(req.body.senha) === false) {
+        return res.status(400).json({ message: 'Senha incorreta.' });
+    }
+
+    if (user) {
+      if (!req.body.novoNome) {
+        return res.status(400).json({ message: 'O novo nome não pode estar vazio.' });
+      }
+
+      if (req.body.novoNome == user.name) {
+        return res.status(400).json({ message: 'O novo nome não pode ser igual ao atual.' });
+      }
+
+      user.name = req.body.novoNome;
+
+      const updatedUser = await user.save();
+
+      if (updatedUser) {
+            req.session.user.name = updatedUser.name;
+
+            req.session.save((err) => {
+                if (err) {
+                    console.error('Erro ao atualizar sessão: ', err);
+                    return res.status(500).json({ success: false, message: 'Erro ao atualizar sessão.' });
+                }
+
+                res.status(200).json({ 
+                    success: true, 
+                    message: 'Nome alterado com sucesso!'
+              });
+        });
+      } else {
+        return res.status(404).json({ message: 'Usuário não encontrado.' });
+      }
+    }
+  } catch (error) {
+    console.error('Erro ao atualizar perfil: ', error);
+    return res.status(500).json({ message: 'Erro interno do servidor.' });
+  }
+});
+
 app.post('/api/users/logout', (req, res, next) => {
   // A forma de "apagar" um cookie é enviá-lo novamente com um valor vazio
   // e uma data de expiração no passado.

@@ -73,11 +73,7 @@ document.getElementById("form-gerador").addEventListener("submit", function(even
         alert("Ops! Ocorreu um erro. Tente novamente.");
     })
     .finally(() => {
-        // 7. CLEAN UP (THIS RUNS AFTER SUCCESS OR FAILURE)
-        // Hide the spinner
         spinner.classList.add("d-none");
-        
-        // Re-enable the button
         gerarBtn.disabled = false;
         gerarBtn.innerHTML = "Gerar Imagem";
     });
