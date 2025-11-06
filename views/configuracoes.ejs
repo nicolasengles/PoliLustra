@@ -50,15 +50,15 @@
                 <div class="modal-body">
                     <form id="form-alterar-nome" class="d-flex flex-column">
                         <label for="alterar-nome-input" class="form-label">Nome:</label>
-                        <input id="alterar-nome-input" name="novo-nome" class="form-control mb-2" type="text">
+                        <input id="alterar-nome-input" name="novo-nome" class="form-control mb-2" type="text" minlength="5" maxlength="70" required>
                         <label for="alterar-nome-input" class="form-label">Senha:</label>
-                        <input id="alterar-nome-senha-input" name="senha" class="form-control mb-2" type="password">
+                        <input id="alterar-nome-senha-input" name="senha" class="form-control mb-2" type="password" minlength="8" maxlength="100" required>
                     </form>
-                    <div class="alert alert-danger mb-2 d-none"></div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-primary" form="form-alterar-nome" value="Submit">Alterar Nome</button>
+                  <button id="alterar-nome-submit-btn" type="submit" class="btn btn-primary" form="form-alterar-nome" value="Submit">Alterar Nome</button>
+                  <button id="alterar-nome-submit-btn-wait" type="submit" class="btn btn-primary d-none" form="form-alterar-nome" value="Submit" disabled><div class="spinner-border spinner-border-sm me-2" role="status"></div>Alterar Nome</button>
                 </div>
               </div>
             </div>
@@ -73,16 +73,17 @@
                     <!-- <p>Email Atual: <span class="fw-bold"><%= currentUser.email %></span></p> -->
                     <form id="form-alterar-email" class="d-flex flex-column">
                         <label for="alterar-email-input" class="form-label">Email:</label>
-                        <input id="alterar-email-input" class="form-control mb-2" type="email">
+                        <input id="alterar-email-input" class="form-control mb-2" type="email" maxlength="254" required>
                         <label for="alterar-email-input-confirmar" class="form-label">Confirmar Email:</label>
-                        <input id="alterar-email-input-confirmar" class="form-control mb-2" type="email">
+                        <input id="alterar-email-input-confirmar" class="form-control mb-2" type="email" maxlength="254" required>
                         <label for="alterar-email-input" class="form-label">Senha:</label>
-                        <input id="alterar-email-senha-input" class="form-control mb-2" type="password">
+                        <input id="alterar-email-senha-input" class="form-control mb-2" type="password" minlength="8" maxlength="100" required>
                     </form>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary">Alterar Email</button>
+                  <button id="alterar-email-submit-btn" type="submit" class="btn btn-primary" form="form-alterar-email" value="Submit">Alterar Email</button>
+                  <button id="alterar-email-submit-btn-wait" type="submit" class="btn btn-primary d-none" form="form-alterar-email" value="Submit" disabled><div class="spinner-border spinner-border-sm me-2" role="status"></div>Alterar Email</button>
                 </div>
               </div>
             </div>
@@ -96,16 +97,17 @@
                 <div class="modal-body">
                     <form id="form-alterar-senha" class="d-flex flex-column">
                         <label for="senha-atual-input" class="form-label">Senha Atual:</label>
-                        <input id="senha-atual-input" class="form-control mb-2" type="password">
+                        <input id="senha-atual-input" class="form-control mb-2" type="password" autocomplete="current-password" minlength="8" maxlength="100" required>
                         <label for="alterar-senha-input" class="form-label">Nova senha:</label>
-                        <input id="alterar-senha-input" class="form-control mb-2" type="password">
+                        <input id="alterar-senha-input" class="form-control mb-2" type="password" autocomplete="new-password" minlength="8" maxlength="100" required>
                         <label for="alterar-senha-input-confirmar" class="form-label">Confirmar Nova Senha:</label>
-                        <input id="alterar-senha-senha-input-confirmar" class="form-control mb-2" type="password">
+                        <input id="alterar-senha-input-confirmar" class="form-control mb-2" type="password" minlength="8" maxlength="100" required>
                     </form>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-danger text-white">Alterar Senha</button>
+                  <button id="alterar-senha-submit-btn" type="submit" class="btn btn-primary" form="form-alterar-senha" value="Submit">Alterar Senha</button>
+                  <button id="alterar-senha-submit-btn-wait" type="submit" class="btn btn-primary d-none" form="form-alterar-senha" value="Submit" disabled><div class="spinner-border spinner-border-sm me-2" role="status"></div>Alterar Senha</button>
                 </div>
               </div>
             </div>

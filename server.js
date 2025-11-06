@@ -1,4 +1,4 @@
-// server.js
+const MENSAGEM_ERRO_PADRAO = 'Erro interno do servidor. Entre em contato conosco caso o problema persista.';
 
 // 1. IMPORTAÇÕES E CONFIGURAÇÃO INICIAL
 require('dotenv').config();
@@ -108,8 +108,8 @@ app.get('/login', (req, res) => {
   res.render('login');
 });
 
-app.get('/register', (req, res) => {
-  res.render('register');
+app.get('/cadastro', (req, res) => {
+  res.render('cadastro');
 });
 
 app.get('/sobre', (req, res) => {
@@ -133,8 +133,6 @@ app.get('/politica-de-privacidade', (req, res) => {
 //     user: req.user
 //   });
 // });
-
-// ROTAS DA API
 
 app.post('/api/ia/generate', protect, async (req, res) => {
   try {
@@ -293,31 +291,6 @@ app.delete('/api/ia/history/:id', protect, async (req, res) => {
   }
 });
 
-// --- ROTA DE CADASTRO ---
-// app.post('/api/users/register', async (req, res) => {
-//   try {
-//     const { name, email, password } = req.body;
-
-//     if (!name || !email || !password) {
-//       return res.status(400).json({ message: 'Por favor, preencha todos os campos.' });
-//     }
-
-//     const userExists = await User.findOne({ email });
-//     if (userExists) {
-//       return res.status(400).json({ message: 'Este e-mail já está a ser utilizado.' });
-//     }
-
-//     const user = new User({ name, email, password });
-//     await user.save();
-
-//     res.status(201).json({ message: 'Utilizador registado com sucesso!' });
-//   } catch (error) {
-//     console.error('Erro no registo:', error);
-//     res.status(500).json({ message: 'Erro interno do servidor.' });
-//   }
-// });
-
-// --- ROTA DE CADASTRO (NOVA COM LOGIN AUTOMÁTICO) ---
 app.post('/api/users/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -331,32 +304,16 @@ app.post('/api/users/register', async (req, res) => {
       return res.status(400).json({ message: 'Este e-mail já está sendo utilizado.' });
     }
 
-    // 1. O usuário é criado e salvo
     const user = new User({ name, email, password });
     await user.save();
 
-    // 2. Se o usuário foi criado com sucesso...
     if (user) {
-      // 3. Geramos o token para ele (copiado da sua rota de login)
-      // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      //   expiresIn: '30d',
-      // });
-
-      // 4. Definimos o cookie de autenticação
-      // res.cookie('token', token, {
-      //   httpOnly: true,
-      //   secure: process.env.NODE_ENV === 'production',
-      //   sameSite: 'strict',
-      //   maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
-      // });
-
       req.session.user = { 
         _id: user._id,
         name: user.name,
         email: user.email,
       };
 
-      // 5. Enviamos os dados do usuário (status 201 - Created)
       res.status(201).json({
         _id: user._id,
         name: user.name,
@@ -366,12 +323,17 @@ app.post('/api/users/register', async (req, res) => {
       res.status(400).json({ message: 'Dados de utilizador inválidos.' });
     }
   } catch (error) {
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      const errorMessage = messages[0];
+      return res.status(400).json({ message: errorMessage });
+    }
+
     console.error('Erro no registo:', error);
-    res.status(500).json({ message: 'Erro interno do servidor.' });
+    res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
 
-// --- ROTA DE LOGIN (COM COOKIES HTTPONLY) ---
 app.post('/api/users/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -379,26 +341,14 @@ app.post('/api/users/login', async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-      // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      //   expiresIn: '30d',
-      // });
-
       req.session.user = { 
         _id: user._id,
         name: user.name,
         email: user.email,
       };
 
-      // Define o token num cookie seguro em vez de o enviar no corpo da resposta
-      // res.cookie('token', token, {
-      //   httpOnly: true,
-      //   secure: process.env.NODE_ENV === 'production',
-      //   sameSite: 'strict',
-      //   maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
-      // });
-
-      // Envia apenas os dados públicos do utilizador de volta
       res.status(200).json({
+        success: true,
         _id: user._id,
         name: user.name,
         email: user.email,
@@ -408,8 +358,8 @@ app.post('/api/users/login', async (req, res) => {
       res.status(401).json({ message: 'E-mail ou senha inválidos.' });
     }
   } catch (error) {
-    console.error('Erro no login:', error);
-    res.status(500).json({ message: 'Erro interno do servidor.' });
+    console.error('Erro:', error);
+    res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
 
@@ -504,48 +454,44 @@ app.post('/api/users/reset-password/:token', async (req, res) => {
   }
 });
 
-app.put('/api/users/profile', protect, async (req, res) => {
-  try {
-    const user = req.user;
+// app.put('/api/users/profile', protect, async (req, res) => {
+//   try {
+//     const user = req.user;
 
-    if (user) {
-      user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
+//     if (user) {
+//       user.name = req.body.name || user.name;
+//       user.email = req.body.email || user.email;
 
-      if (req.body.password) {
-        user.password = req.body.password;
-      }
+//       if (req.body.password) {
+//         user.password = req.body.password;
+//       }
 
-      const updatedUser = await user.save();
+//       const updatedUser = await user.save();
 
-      // Adicionamos 'return' para garantir que a função termina aqui
-      return res.status(200).json({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-      });
-    } else {
-      // Adicionamos 'return' aqui também
-      return res.status(404).json({ message: 'Utilizador não encontrado.' });
-    }
-  } catch (error) {
-    console.error('Erro ao atualizar perfil:', error);
-    // E aqui também
-    return res.status(500).json({ message: 'Erro interno do servidor.' });
-  }
-});
+//       // Adicionamos 'return' para garantir que a função termina aqui
+//       return res.status(200).json({
+//         _id: updatedUser._id,
+//         name: updatedUser.name,
+//         email: updatedUser.email,
+//       });
+//     } else {
+//       // Adicionamos 'return' aqui também
+//       return res.status(404).json({ message: 'Utilizador não encontrado.' });
+//     }
+//   } catch (error) {
+//     console.error('Erro ao atualizar perfil:', error);
+//     // E aqui também
+//     return res.status(500).json({ message: 'Erro interno do servidor.' });
+//   }
+// });
 
 app.put('/api/users/alterar-nome', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    
-    if (await user.matchPassword(req.body.senha) === false) {
-        return res.status(400).json({ message: 'Senha incorreta.' });
-    }
 
     if (user) {
-      if (!req.body.novoNome) {
-        return res.status(400).json({ message: 'O novo nome não pode estar vazio.' });
+      if (await user.matchPassword(req.body.senha) === false) {
+        return res.status(400).json({ message: 'Senha incorreta.' });
       }
 
       if (req.body.novoNome == user.name) {
@@ -556,58 +502,117 @@ app.put('/api/users/alterar-nome', protect, async (req, res) => {
 
       const updatedUser = await user.save();
 
-      if (updatedUser) {
-            req.session.user.name = updatedUser.name;
+      req.session.user.name = updatedUser.name;
 
-            req.session.save((err) => {
-                if (err) {
-                    console.error('Erro ao atualizar sessão: ', err);
-                    return res.status(500).json({ success: false, message: 'Erro ao atualizar sessão.' });
-                }
+      req.session.save((err) => {
+          if (err) {
+              console.error('Erro ao atualizar sessão:', err);
+              return res.status(500).json({ success: false, message: 'Erro ao atualizar sessão.' });
+          }
 
-                res.status(200).json({ 
-                    success: true, 
-                    message: 'Nome alterado com sucesso!'
-              });
-        });
-      } else {
-        return res.status(404).json({ message: 'Usuário não encontrado.' });
-      }
+          res.status(200).json({ success: true });
+      });
+    } else {
+      return res.status(400).json({ message: 'Erro de autenticação: Usuário não encontrado.' });
     }
   } catch (error) {
-    console.error('Erro ao atualizar perfil: ', error);
-    return res.status(500).json({ message: 'Erro interno do servidor.' });
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      const errorMessage = messages[0];
+      return res.status(400).json({ message: errorMessage });
+    }
+    console.error('Erro:', error);
+    return res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
+  }
+});
+
+app.put('/api/users/alterar-email', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      if (await user.matchPassword(req.body.senha) === false) {
+        return res.status(400).json({ message: 'Senha incorreta.' });
+      }
+
+      if (req.body.novoEmail == user.email) {
+        return res.status(400).json({ message: 'O novo email não pode ser igual ao atual.' });
+      }
+
+      user.email = req.body.novoEmail;
+
+      const updatedUser = await user.save();
+
+      req.session.user.email = updatedUser.email;
+
+      req.session.save((err) => {
+          if (err) {
+              console.error('Erro ao atualizar sessão:', err);
+              return res.status(500).json({ success: false, message: 'Erro ao atualizar sessão.' });
+          }
+
+          res.status(200).json({ success: true });
+      });
+    } else {
+      return res.status(400).json({ message: 'Erro de autenticação: Usuário não encontrado.' });
+    }
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      const errorMessage = messages[0];
+      return res.status(400).json({ message: errorMessage });
+    }
+    console.error('Erro:', error);
+    return res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
+  }
+});
+
+app.put('/api/users/alterar-senha', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      if (await user.matchPassword(req.body.senha) === false) {
+        return res.status(400).json({ message: 'Senha incorreta.' });
+      }
+
+      if (await user.matchPassword(req.body.novaSenha) === true) {
+        return res.status(400).json({ message: 'A nova senha não pode ser igual à atual.' });
+      }
+
+      user.password = req.body.novaSenha;
+
+      await user.save();
+
+      res.status(200).json({ success: true });
+
+    } else {
+      return res.status(400).json({ message: 'Erro de autenticação: Usuário não encontrado.' });
+    }
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      const errorMessage = messages[0];
+      return res.status(400).json({ message: errorMessage });
+    }
+    console.error('Erro:', error);
+    return res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
 
 app.post('/api/users/logout', (req, res, next) => {
-  // A forma de "apagar" um cookie é enviá-lo novamente com um valor vazio
-  // e uma data de expiração no passado.
-  // res.cookie('token', '', {
-  //   httpOnly: true,
-  //   expires: new Date(0), // Define a expiração para o início dos tempos (imediatamente)
-  // });
-
   req.session.destroy(err => {
     if (err) {
-      // If there's an error destroying the session,
-      // pass it to the error handler
       return next(err); 
     }
 
-    // --- Put ALL response logic INSIDE the callback ---
-
-    // 1. Clear the session cookie. 'connect.sid' is the default name.
     res.clearCookie('connect.sid'); 
-    
-    // 2. Redirect the user to the homepage.
+
     res.status(200).json({ redirectUrl: '/' });
   });
-
-  // res.status(200).json({ message: 'Logout bem-sucedido.' });
 });
 
-// 5. INICIAR O SERVIDOR
+// INICIAR O SERVIDOR
 app.listen(port, () => {
     console.log(`Servidor a rodar em http://localhost:${port}`);
 });

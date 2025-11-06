@@ -9,20 +9,22 @@
         <div class="d-flex justify-content-center align-items-center flex-grow-1">
             <div class="bg-white p-5 rounded-4 shadow text-center login-box mx-auto w-80 w-md-35 mt-4"> 
                 <h1 class="mb-4 login-title">Login</h1>
-                <form id="login-form">
+                <form id="login-form" class="mb-4">
                     <div class="mb-3">
-                        <input type="email" class="form-control custom-input" placeholder="Email @sistemapoliedro.com ou @p4ed"
-                        required id="email-input">
+                        <input type="email" id="email-input" class="form-control custom-input" placeholder="Email" required>
                     </div>
                     <div class="mb-3">
                         <input type="password" class="form-control custom-input" placeholder="Senha" required id="password-input">
                     </div>
-                    <div class="mb-4">
-                        <a href="#" class="forgot-password-link">Esqueceu sua Senha?</a>
+                    <div class="mb-4 d-flex flex-column gap-2">
+                        <a href="#">Esqueceu sua Senha?</a>
+                        <a href="/cadastro">Ainda não tenho cadastro</a>
                     </div>
                     <div class="alert alert-danger mb-4 d-none"></div>
-                    <button type="submit" class="btn btn-light btn-md border border-dark border-3">Log In</button>
-                </form>  
+                    <button id="login-btn" type="submit" class="btn btn-light btn-md border border-dark border-3">Log In</button>
+                    <button id="login-btn-wait" type="submit" class="btn btn-light btn-md border border-dark border-3 d-none" disabled><div class="spinner-border spinner-border-sm me-2" role="status"></div>Log In</button>
+                </form>
+                
             </div>
         </div>
 
