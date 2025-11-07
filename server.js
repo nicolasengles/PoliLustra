@@ -600,13 +600,37 @@ app.put('/api/users/alterar-senha', protect, async (req, res) => {
   }
 });
 
+app.delete('/api/users/excluir-conta', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      if (await user.matchPassword(req.body.senha) === false) {
+        return res.status(400).json({ message: 'Senha incorreta.' });
+      }
+
+      await user.deleteOne();
+
+      req.session.destroy(err => {
+        if (err) {
+          return next(err); 
+        }
+        res.status(200).json({ success: true });
+      });
+    } else {
+      return res.status(400).json({ message: 'Erro de autenticação: Usuário não encontrado.' });
+    }
+  } catch (error) {
+    console.error('Erro:', error);
+    return res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
+  }
+});
+
 app.post('/api/users/logout', (req, res, next) => {
   req.session.destroy(err => {
     if (err) {
       return next(err); 
     }
-
-    res.clearCookie('connect.sid'); 
 
     res.status(200).json({ redirectUrl: '/' });
   });

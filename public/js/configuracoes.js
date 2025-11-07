@@ -80,6 +80,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
         await alterarSenha(dados);
     });
+
+    // Excluir conta
+    document.getElementById("form-excluir-conta").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const senha = document.getElementById("excluir-conta-senha").value;
+
+        await alterarSenha(senha);
+    });
 });
 
 async function alterarNome(dados) {
@@ -195,5 +204,39 @@ async function alterarSenha(dados) {
         alert(MENSAGEM_ERRO_PADRAO);
         alterarSenhaSubmitBtn.classList.remove("d-none");
         alterarSenhaSubmitBtnWait.classList.add("d-none");
+    }
+}
+
+async function excluirConta(senha) {
+    const excluirContaSubmitBtn = document.getElementById("excluir-conta-submit-btn");
+    const excluirContaSubmitBtnWait = document.getElementById("excluir-conta-submit-btn-wait");
+
+    excluirContaSubmitBtn.classList.add("d-none");
+    excluirContaSubmitBtnWait.classList.remove("d-none");
+
+    try {
+        const response = await fetch('/api/users/excluir-conta', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(senha)
+        });
+
+        const res = await response.json();
+
+        if (res.success) {
+            window.location.href = '/';
+        } else {
+            alert(res.message || MENSAGEM_ERRO_PADRAO);
+            excluirContaSubmitBtn.classList.remove("d-none");
+            excluirContaSubmitBtnWait.classList.add("d-none");
+        }
+
+    } catch (error) {
+        console.error('Erro:', error);
+        alert(MENSAGEM_ERRO_PADRAO);
+        excluirContaSubmitBtn.classList.remove("d-none");
+        excluirContaSubmitBtnWait.classList.add("d-none");
     }
 }
