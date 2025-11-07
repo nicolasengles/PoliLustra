@@ -101,7 +101,13 @@ app.get('/gerador', protect, (req, res) => {
 });
 
 app.get('/historico', protect, (req, res) => {
-  res.render('historico', );
+
+  const dadosImagem = {
+    "imagemUrl": imageUrl,
+    "dataCriacao": createdAt
+  }
+
+  res.render('historico', {imagem : dadosImagem} );
 });
 
 app.get('/login', (req, res) => {

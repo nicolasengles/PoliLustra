@@ -38,6 +38,8 @@ async function cadastrar(dados) {
 
         const res = await response.json();
 
+        console.log(res)
+
         if (res.success) {
             window.location.href = '/gerador'; 
         } else {
