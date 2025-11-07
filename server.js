@@ -315,6 +315,7 @@ app.post('/api/users/register', async (req, res) => {
       };
 
       res.status(201).json({
+        success: true,
         _id: user._id,
         name: user.name,
         email: user.email,
