@@ -11,12 +11,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     alterarNomeModal.addEventListener('shown.bs.modal', function (event) {
         const alertDiv = document.createElement('div');
-        alertDiv.classList = ('alert alert-danger mb-2 d-none');
+        alertDiv.classList = ('alert mb-2 d-none');
         this.querySelector('form').insertAdjacentElement('afterend', alertDiv);
     });
 
     alterarNomeModal.addEventListener('hidden.bs.modal', function (event) {
-        this.querySelector('.alert.alert-danger').remove();
+        this.querySelector('.alert').remove();
     });
 
     // Ativar/Desativar alert dentro do modal de alterar email
@@ -24,12 +24,12 @@ document.addEventListener("DOMContentLoaded", function() {
     
     alterarEmailModal.addEventListener('shown.bs.modal', function (event) {
         const alertDiv = document.createElement('div');
-        alertDiv.classList = ('alert alert-danger mb-2 d-none');
+        alertDiv.classList = ('alert mb-2 d-none');
         this.querySelector('form').insertAdjacentElement('afterend', alertDiv);
     });
 
     alterarEmailModal.addEventListener('hidden.bs.modal', function (event) {
-        this.querySelector('.alert.alert-danger').remove();
+        this.querySelector('.alert').remove();
     });
 
     // Ativar/Desativar alert dentro do modal de alterar senha
@@ -37,12 +37,12 @@ document.addEventListener("DOMContentLoaded", function() {
     
     alterarSenhaModal.addEventListener('shown.bs.modal', function (event) {
         const alertDiv = document.createElement('div');
-        alertDiv.classList = ('alert alert-danger mb-2 d-none');
+        alertDiv.classList = ('alert mb-2 d-none');
         this.querySelector('form').insertAdjacentElement('afterend', alertDiv);
     });
 
     alterarSenhaModal.addEventListener('hidden.bs.modal', function (event) {
-        this.querySelector('.alert.alert-danger').remove();
+        this.querySelector('.alert').remove();
     });
     
     // Alterar nome
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const senha = document.getElementById("excluir-conta-senha").value;
 
-        await alterarSenha(senha);
+        await excluirConta(senha);
     });
 });
 
@@ -112,14 +112,14 @@ async function alterarNome(dados) {
         if (res.success) {
             window.location.reload();
         } else {
-            alert(res.message || MENSAGEM_ERRO_PADRAO);
+            error(res.message || MENSAGEM_ERRO_PADRAO);
             alterarNomeSubmitBtn.classList.remove("d-none");
             alterarNomeSubmitBtnWait.classList.add("d-none");
         }
 
     } catch (error) {
-        console.error('Erro:', error);
-        alert(MENSAGEM_ERRO_PADRAO);
+        console.error("error", 'Erro:', error);
+        error(MENSAGEM_ERRO_PADRAO);
         alterarNomeSubmitBtn.classList.remove("d-none");
         alterarNomeSubmitBtnWait.classList.add("d-none");
     }
@@ -133,7 +133,7 @@ async function alterarEmail(dados) {
     alterarEmailSubmitBtnWait.classList.remove("d-none");
 
     if (document.getElementById("alterar-email-input").value !== document.getElementById("alterar-email-input-confirmar").value) {
-        alert("Os emails não coincidem.");
+        error("Os emails não coincidem.");
         alterarEmailSubmitBtn.classList.remove("d-none");
         alterarEmailSubmitBtnWait.classList.add("d-none");
         return;
@@ -153,14 +153,14 @@ async function alterarEmail(dados) {
         if (res.success) {
             window.location.reload();
         } else {
-            alert(res.message || MENSAGEM_ERRO_PADRAO);
+            error(res.message || MENSAGEM_ERRO_PADRAO);
             alterarEmailSubmitBtn.classList.remove("d-none");
             alterarEmailSubmitBtnWait.classList.add("d-none");
         }
 
     } catch (error) {
         console.error('Erro:', error);
-        alert(MENSAGEM_ERRO_PADRAO);
+        error(MENSAGEM_ERRO_PADRAO);
         alterarEmailSubmitBtn.classList.remove("d-none");
         alterarEmailSubmitBtnWait.classList.add("d-none");
     }
@@ -174,7 +174,7 @@ async function alterarSenha(dados) {
     alterarSenhaSubmitBtnWait.classList.remove("d-none");
 
     if (document.getElementById("alterar-senha-input").value !== document.getElementById("alterar-senha-input-confirmar").value) {
-        alert("As senhas não coincidem.");
+        error("As senhas não coincidem.");
         alterarSenhaSubmitBtn.classList.remove("d-none");
         alterarSenhaSubmitBtnWait.classList.add("d-none");
         return;
@@ -194,14 +194,14 @@ async function alterarSenha(dados) {
         if (res.success) {
             window.location.reload();
         } else {
-            alert(res.message || MENSAGEM_ERRO_PADRAO);
+            error(res.message || MENSAGEM_ERRO_PADRAO);
             alterarSenhaSubmitBtn.classList.remove("d-none");
             alterarSenhaSubmitBtnWait.classList.add("d-none");
         }
 
     } catch (error) {
         console.error('Erro:', error);
-        alert(MENSAGEM_ERRO_PADRAO);
+        error(MENSAGEM_ERRO_PADRAO);
         alterarSenhaSubmitBtn.classList.remove("d-none");
         alterarSenhaSubmitBtnWait.classList.add("d-none");
     }
@@ -220,7 +220,7 @@ async function excluirConta(senha) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(senha)
+            body: JSON.stringify({senha})
         });
 
         const res = await response.json();
@@ -228,14 +228,14 @@ async function excluirConta(senha) {
         if (res.success) {
             window.location.href = '/';
         } else {
-            alert(res.message || MENSAGEM_ERRO_PADRAO);
+            error(res.message || MENSAGEM_ERRO_PADRAO);
             excluirContaSubmitBtn.classList.remove("d-none");
             excluirContaSubmitBtnWait.classList.add("d-none");
         }
 
     } catch (error) {
         console.error('Erro:', error);
-        alert(MENSAGEM_ERRO_PADRAO);
+        error(MENSAGEM_ERRO_PADRAO);
         excluirContaSubmitBtn.classList.remove("d-none");
         excluirContaSubmitBtnWait.classList.add("d-none");
     }

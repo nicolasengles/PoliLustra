@@ -32,14 +32,14 @@ async function login(dados) {
         if (res.success) {
             window.location.href = '/gerador';
         } else {
-            alert(res.message || MENSAGEM_ERRO_PADRAO);
+            error(res.message || MENSAGEM_ERRO_PADRAO);
             loginBtn.classList.remove('d-none');
             loginBtnWait.classList.add('d-none');
         }
 
     } catch (error) {
         console.error('Erro:', error);
-        alert(MENSAGEM_ERRO_PADRAO);
+        error( MENSAGEM_ERRO_PADRAO);
         loginBtn.classList.remove('d-none');
         loginBtnWait.classList.add('d-none');
     }
