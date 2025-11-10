@@ -3,9 +3,9 @@
     <%- include('partials/head', {title: 'Gerador de Imagens Educacionais | PoliLustra'}) %>
     <body>
         <%- include('partials/navbar') %>
-        <div class="d-flex justify-content-around align-items-center mt-5 text-center">
-            <div class="w-35 rounded-4 border border-dark border-3 d-flex justify-content-center align-items-center" style="height: 672px;">
-                <img id="imagem-gerada" class="img-fluid rounded-4 d-none" src="images/placeholder.png" alt="Imagem Gerada">
+        <div class="d-flex justify-content-around align-items-center my-5 text-center">
+            <div class="w-35 vh-75 rounded-4 border border-dark border-3 d-flex justify-content-center align-items-center overflow-hidden">
+                <img id="imagem-gerada" class="vh-75 d-none" alt="Imagem Gerada">
                 <p id="placeholder-text">Sua imagem aparecerá aqui</p>
                 <div class="spinner-border text-primary d-none" style="width: 4rem; height: 4rem;" role="status"></div>
                 <div class="alert alert-danger w-80 d-none"></div>
@@ -26,6 +26,9 @@
                     <option></option>
                     <option value="Realista">Realista</option>
                     <option value="Anime">Anime</option>
+                    <option value="Diagrama">Diagrama</option>
+                    <option value="Gravura">Gravura</option>
+                    <option value="Close-Up">Close-Up</option>
                 </select>
                 <label for="descricao-input" class="form-label mt-3">Descrição:</label>
                 <textarea id="descricao-input" class="form-control" rows="4" placeholder="Descreva a imagem que deseja gerar..."></textarea>
