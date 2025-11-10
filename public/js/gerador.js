@@ -1,6 +1,6 @@
 const temasPorMateria = {
     "Física": ['Mecânica', 'Óptica', 'Eletricidade', 'Termodinâmica'],
-    "Química": ['Química orgânica', 'Química Física','Bioquímica'],
+    "Química": ['Química Geral', 'Físico-Química','Química Orgânica', 'Química Inorgânica'],
 };
 
 const materiaSelect = document.getElementById('materia-select');
