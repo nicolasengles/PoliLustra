@@ -3,10 +3,10 @@
     <%- include('partials/head', {title: 'Gerador de Imagens Educacionais | PoliLustra'}) %>
     <body>
         <%- include('partials/navbar') %>
-        <div class="d-flex justify-content-around align-items-center mt-5 text-center">
-            <div class="w-35 rounded-4 border border-dark border-3 d-flex justify-content-center align-items-center" style="height: 672px;">
-                <img id="imagem-gerada" class="img-fluid rounded-4 d-none" src="images/placeholder.png" alt="Imagem Gerada">
-                <p id="placeholder-text">Sua imagem aparecerá aqui</p>
+        <div class="d-flex justify-content-around align-items-center my-5 text-center">
+            <div class="w-35 vh-75 rounded-4 border border-dark border-3 d-flex justify-content-center align-items-center overflow-hidden">
+                <img id="imagem-gerada" class="vh-75" src="images/einstein.png" alt="Imagem Gerada">
+                <!-- <p id="placeholder-text">Sua imagem aparecerá aqui</p> -->
                 <div class="spinner-border text-primary d-none" style="width: 4rem; height: 4rem;" role="status"></div>
                 <div class="alert alert-danger w-80 d-none"></div>
             </div>
