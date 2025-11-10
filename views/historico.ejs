@@ -1,41 +1,53 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+    
     <%- include('partials/head', {title: 'Histórico | Poliustra'}) %>
+
     <body> 
         <%- include('partials/navbar') %>
+
         <div class="mt-5">
             <h1 class="text-center mb-5">Histórico</h1>
-            <div class="d-flex flex-wrap justify-content-center">
-                <div class="card shadow-sm mx-3 mb-4" style="width: 250px;">
-                    <img src="URL_DA_IMAGEM_1" class="card-img-top" alt="Descrição 1" style="height: 250px; object-fit: cover;">
-                    <div class="card-body text-center d-flex justify-content-around p-2">
-                        <button class="btn btn-danger btn-md w-45">Excluir</button>
-                        <button class="btn btn-info btn-md w-45">Editar</button>
-                    </div>
-                </div>
-                <div class="card shadow-sm mx-3 mb-4" style="width: 250px;">
-                    <img src="URL_DA_IMAGEM_2" class="card-img-top" alt="Descrição 2" style="height: 250px; object-fit: cover;">
-                    <div class="card-body text-center d-flex justify-content-around p-2">
-                        <button class="btn btn-danger btn-md w-45">Excluir</button>
-                        <button class="btn btn-info btn-md w-45">Editar</button>
-                    </div>
-                </div>
-                <div class="card shadow-sm mx-3 mb-4" style="width: 250px;">
-                    <img src="URL_DA_IMAGEM_3" class="card-img-top" alt="Descrição 3" style="height: 250px; object-fit: cover;">
-                    <div class="card-body text-center d-flex justify-content-around p-2">
-                        <button class="btn btn-danger btn-md w-45">Excluir</button>
-                        <button class="btn btn-info btn-md w-45">Editar</button>
-                    </div>
-                </div>
-                <div class="card shadow-sm mx-3 mb-4" style="width: 250px;">
-                    <img src="URL_DA_IMAGEM_4" class="card-img-top" alt="Descrição 4" style="height: 250px; object-fit: cover;">
-                    <div class="card-body text-center d-flex justify-content-around p-2">
-                        <button class="btn btn-danger btn-md w-45">Excluir</button>
-                        <button class="btn btn-info btn-md w-45">Editar</button>
-                    </div>
-                </div>
+            
+            <div class="d-flex flex-wrap justify-content-center" id="historico-container">
+
+                <% if (imagens && imagens.length > 0) { %>
+                    <% imagens.forEach(img => { %>
+                        
+                        <div class="card shadow-sm mx-3 mb-4 image-card" style="width: 250px;">
+                            
+                            <img src="<%= img.imageUrl %>" class="card-img-top" alt="<%= img.assunto || 'Imagem gerada' %>" style="height: 250px; object-fit: cover;">
+                            
+                            <div class="card-body text-center d-flex justify-content-evenly p-2">
+                                
+                                <a href="<%= img.imageUrl.replace('/upload/', '/upload/fl_attachment,f_jpg/') %>" 
+                                   class="btn btn-secondary btn-sm" 
+                                   title="Baixar Imagem"
+                                   target="_blank">
+                                    Baixar
+                                </a>
+                                
+                                <!-- <button class="btn btn-info btn-sm">Editar</button> -->
+
+                                <button class="btn btn-danger btn-sm btn-excluir" 
+                                        data-id="<%= img._id %>">
+                                    Excluir
+                                </button>
+                            </div>
+                        </div>
+
+                    <% }) %>
+                
+                <% } else { %>
+                    <p class="text-center text-muted">Você ainda não criou nenhuma imagem.</p>
+                <% } %>
+                
             </div>
         </div>
+
         <%- include('partials/footer') %>
+
+        <script src="/js/historico.js"></script>
+
     </body>
 </html>

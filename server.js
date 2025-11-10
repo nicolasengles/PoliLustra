@@ -100,14 +100,28 @@ app.get('/gerador', protect, (req, res) => {
   res.render('gerador');
 });
 
-app.get('/historico', protect, (req, res) => {
+// Use async/await para lidar com a busca no banco de dados
+// Importe o modelo no topo do seu arquivo de rotas, se já não estiver lá
 
-  const dadosImagem = {
-    "imagemUrl": imageUrl,
-    "dataCriacao": createdAt
+// Esta é a ROTA QUE RENDERIZA A PÁGINA
+app.get('/historico', protect, async (req, res) => {
+  
+  // ----- DEBUG 1: Verifique se o usuário está logado -----
+  console.log('ID do usuário buscando histórico:', req.user._id);
+
+  try {
+    // Busque as imagens usando o _id do usuário
+    const imagensDoUsuario = await Image.find({ user: req.user._id }).sort({ createdAt: -1 });
+
+    console.log('Imagens encontradas no banco:', imagensDoUsuario);
+
+    // Renderize a view, passando o array de imagens
+    res.render('historico', { imagens: imagensDoUsuario });
+
+  } catch (err) {
+    console.error("Erro ao buscar histórico: ", err);
+    res.status(500).send("Erro ao carregar o histórico.");
   }
-
-  res.render('historico', {imagem : dadosImagem} );
 });
 
 app.get('/login', (req, res) => {
