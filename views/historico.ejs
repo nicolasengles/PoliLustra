@@ -15,23 +15,25 @@
                     <% imagens.forEach(img => { %>
                         
                         <div class="card shadow-sm mx-3 mb-4 image-card" style="width: 400px;">
-                            
+               
                             <img src="<%= img.imageUrl %>" class="card-img-top" alt="<%= img.assunto || 'Imagem gerada' %>" style="height: 250px; object-fit: cover;">
                             
                             <div class="card-body text-center d-flex justify-content-evenly p-2">
                                 
-                                <!-- <a href="<%= img.imageUrl.replace('/upload/', '/upload/fl_attachment,f_jpg/') %>" 
-                                   class="btn btn-secondary btn-sm" 
-                                   title="Baixar Imagem"
-                                   target="_blank">
-                                    Baixar
-                                </a> -->
-
-                                <button class="btn btn-sm btn-primary btn-outline-dark rounded-3 btn-download" data-bs-toggle="modal" data-bs-target="#download-modal" data-image-url="<%= img.imageUrl %>" id="btn-download">Baixar</button>
+                                <button class="btn btn-sm btn-secondary btn-outline-dark rounded-3" data-bs-toggle="modal" data-bs-target="#download-modal" data-image-url="<%= img.imageUrl %>">Baixar</button>
                                 
-                                <!-- <button class="btn btn-info btn-sm">Editar</button> -->
+                                <button class="btn btn-info btn-sm rounded-3 btn-outline-dark"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#detalhes-modal"
+                                        data-img-url="<%= img.imageUrl %>"
+                                        data-prompt="<%= img.prompt %>"
+                                        data-materia="<%= img.materia %>"
+                                        data-assunto="<%= img.assunto %>"
+                                        data-descricao="<%= img.prompt_personalizado %>">
+                                    Detalhes
+                                </button>
 
-                                <button class="btn btn-danger btn-sm btn-outline-dark rounded-3 btn-excluir" 
+                                <button class="btn btn-danger btn-sm btn-outline-dark rounded-3 btn-excluir"
                                         data-id="<%= img._id %>">
                                     Excluir
                                 </button>
@@ -54,17 +56,51 @@
                   <h5 class="modal-title" id="download-modal-label">Baixar Imagem</h5>
                 </div>
                 <div class="modal-body">
-
                     <select name="formato" id="format-select" class="form-select mb-3">
-                        <option></option>
+                        <option value="">-- Escolha um formato --</option>
                         <option value="f_jpg">JPG (Padrão, menor)</option>
                         <option value="f_png">PNG (Melhor qualidade, com transparência)</option>
                     </select>
-
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Cancelar</button>
-                  <button id="download-submit-btn" type="button" class="btn btn-primary" form="form-alterar-nome" value="Submit">Baixar</button> 
+                  <button id="download-submit-btn" type="button" class="btn btn-primary">Baixar</button> 
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="detalhes-modal" tabindex="-1" aria-labelledby="detalhes-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="detalhes-modal-label">Detalhes da Imagem</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img id="modal-detalhe-img" src="" class="img-fluid rounded" alt="Imagem selecionada">
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Prompt Completo:</h5>
+                            <p id="modal-detalhe-prompt" class="text-muted" style="font-size: 0.9rem;"></p>
+                            
+                            <hr>
+
+                            <h5>Matéria:</h5>
+                            <p id="modal-detalhe-materia"></p>
+
+                            <h5>Assunto:</h5>
+                            <p id="modal-detalhe-assunto"></p>
+
+                            <h5>Descrição:</h5>
+                            <p id="modal-detalhe-descricao"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Fechar</button>
                 </div>
               </div>
             </div>
