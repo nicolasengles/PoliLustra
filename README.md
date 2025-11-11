@@ -131,7 +131,3 @@ O projeto requer que dois servidores sejam executados simultaneamente: o servido
     Isso iniciará o servidor de tradução em `http://localhost:5001`.
 
 Agora você pode acessar `http://localhost:3000` no seu navegador.
-
-## 📁 Estrutura de Arquivos
-
-/ ├── Models/ │ ├── Image.js # Schema do Mongoose para Imagens │ └── User.js # Schema do Mongoose para Usuários ├── middleware/ │ └── authMiddleware.js # Middleware 'protect' para rotas autenticadas ├── public/ │ ├── css/ # CSS compilado (ignorado pelo .gitignore) │ ├── images/ # Imagens estáticas (logos, placeholders) │ ├── js/ # Scripts JavaScript do lado do cliente (gerador.js, historico.js, etc.) │ └── scss/ # Arquivos SASS/SCSS ├── servico-traducao/ │ └── app.py # Microsserviço de tradução em Flask ├── views/ │ ├── partials/ # EJS parciais (head, navbar, footer) │ ├── gerador.ejs # Página de geração de imagem │ ├── historico.ejs # Página de histórico do usuário │ ├── login.ejs # Página de login │ ├── cadastro.ejs # Página de cadastro │ └── ... # Outras páginas EJS ├── .env # Arquivo de variáveis de ambiente (local) ├── .gitignore # Arquivos ignorados pelo Git ├── package.json # Dependências e scripts do Node.js └── server.js # Arquivo principal do servidor Express (rotas, lógica, etc.)
