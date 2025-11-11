@@ -14,7 +14,7 @@
                 <% if (imagens && imagens.length > 0) { %>
                     <% imagens.forEach(img => { %>
                         
-                        <div class="card shadow-sm mx-3 mb-4 image-card" style="width: 250px;">
+                        <div class="card shadow-sm mx-3 mb-4 image-card" style="width: 400px;">
                             
                             <img src="<%= img.imageUrl %>" class="card-img-top" alt="<%= img.assunto || 'Imagem gerada' %>" style="height: 250px; object-fit: cover;">
                             
@@ -27,7 +27,7 @@
                                     Baixar
                                 </a> -->
 
-                                <button class="btn btn-sm btn-secondary btn-outline-dark rounded-3" data-bs-toggle="modal" data-bs-target="#download-modal">Baixar</button>
+                                <button class="btn btn-sm btn-secondary btn-outline-dark rounded-3" data-bs-toggle="modal" data-bs-target="#download-modal" data-image-url="<%= img.imageUrl %>">Baixar</button>
                                 
                                 <!-- <button class="btn btn-info btn-sm">Editar</button> -->
 
@@ -54,17 +54,17 @@
                   <h5 class="modal-title" id="download-modal-label">Baixar Imagem</h5>
                 </div>
                 <div class="modal-body">
-                    <!-- <form id="form-alterar-nome" class="d-flex flex-column">
-                        <label for="alterar-nome-input" class="form-label">Nome:</label>
-                        <input id="alterar-nome-input" name="novo-nome" class="form-control mb-2" type="text" minlength="5" maxlength="70" required>
-                        <label for="alterar-nome-input" class="form-label">Senha:</label>
-                        <input id="alterar-nome-senha-input" name="senha" class="form-control mb-2" type="password" minlength="8" maxlength="100" required>
-                    </form> -->
+
+                    <select name="formato" id="format-select" class="form-select mb-3">
+                        <option></option>
+                        <option value="f_jpg">JPG (Padrão, menor)</option>
+                        <option value="f_png">PNG (Melhor qualidade, com transparência)</option>
+                    </select>
+
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Cancelar</button>
-                  <!-- <button id="download-submit-btn" type="submit" class="btn btn-primary" form="form-alterar-nome" value="Submit">Alterar Nome</button> -->
-                  <!-- <button id="alterar-nome-submit-btn-wait" type="submit" class="btn btn-primary d-none" form="form-alterar-nome" disabled><div class="spinner-border spinner-border-sm me-2" role="status"></div>Alterar Nome</button> -->
+                  <button id="download-submit-btn" type="button" class="btn btn-primary" form="form-alterar-nome" value="Submit">Baixar</button> 
                 </div>
               </div>
             </div>
