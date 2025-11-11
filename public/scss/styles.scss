@@ -62,9 +62,34 @@ textarea {
     width: 80% !important;
 }
 
+#hero-section {      
+    background-image: linear-gradient(
+      180deg,
+      var(--bs-secondary) 70%,
+      transparent 70%
+    ),
+    url("/images/800x600.webp");
+    background-size: auto, contain;
+    background-position: 0 0, center bottom;
+    background-repeat: no-repeat;
+}
+
+#vanta-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    z-index: -1;
+}
+
 @media (min-width: map-get($grid-breakpoints, "md")) {
     .w-md-25 {
         width: 25% !important;
+    }
+
+    .w-md-30 {
+        width: 30% !important;
     }
 
     .w-md-35 {
@@ -105,30 +130,20 @@ textarea {
         margin-top: 7rem !important;
         margin-bottom: 7rem !important;
     }
-}
 
-#hero-section {      
-    background-image: linear-gradient(
-      110deg,
-      var(--bs-secondary) 50%,
-      transparent 50%
-    ),
-    url("/images/800x600.webp");
-    background-size: contain;
-    background-position: 100%;
-    background-repeat: no-repeat;
-  }
+    .mt-md-0 {
+        margin-top: 0 !important;
+    }
 
-// ==================================================
-// == ADIÇÃO PARA O FUNDO VANTA.JS (VERSÃO 'ABSOLUTE' QUE ROLA) ==
-// ==================================================
-
-// 2. O 'vanta-bg' se estica para preencher o 'body'
-#vanta-bg {
-    position: absolute;  // Corrigido de 'fixed' para 'absolute'
-    top: 0;
-    left: 0;
-    width: 100%;       
-    bottom: 0;         // Estica até o fim do 'body'
-    z-index: -1;       // Fica atrás de tudo
+    #hero-section {      
+        background-image: linear-gradient(
+          90deg,
+          var(--bs-secondary) 50%,
+          transparent 50%
+        ),
+        url("/images/800x600.webp");
+        background-size: contain;
+        background-position: 100%;
+        background-repeat: no-repeat;
+    }
 }
