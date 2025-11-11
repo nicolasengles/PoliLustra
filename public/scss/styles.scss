@@ -9,6 +9,9 @@ $dark: #1B1C20;
 $body-color: #1B1C20;
 $body-bg: #F5F5F5;
 
+// Baseado no $secondary (rgb(251, 164, 31)) mas com 70% de opacidade
+$laranja-transparente: rgba(251, 164, 31, 0.7);
+
 // Módulos Bootstrap
 @import "../../node_modules/bootstrap/scss/_variables.scss";
 @import "../../node_modules/bootstrap/scss/variables-dark.scss";
@@ -24,6 +27,9 @@ $body-bg: #F5F5F5;
     --bs-body-font-family: 'Ubuntu', sans-serif;
     --bs-body-font-size: 1.25rem;
     --bs-navbar-color: var(--bs-body-color);
+    
+    --bs-laranja-transparente: #{$laranja-transparente};
+    --bs-laranja-rgb: #{red($secondary)}, #{green($secondary)}, #{blue($secondary)};
 }
 
 // 1. O 'body' precisa ser o "container" de referência
@@ -62,16 +68,20 @@ textarea {
     width: 80% !important;
 }
 
+/* ↓↓↓ CSS DA HERO SECTION ATUALIZADO ↓↓↓
+  Regras de GIF e gradiente removidas.
+  Adicionadas regras para Vanta.js funcionar.
+*/
 #hero-section {      
-    background-image: linear-gradient(
-      180deg,
-      var(--bs-secondary) 70%,
-      transparent 70%
-    ),
-    url("/images/800x600.webp");
-    background-size: auto, contain;
-    background-position: 0 0, center bottom;
-    background-repeat: no-repeat;
+    position: relative; 
+
+    /* Garante que o conteúdo (o div .w-md-50)
+       fique na frente da animação Vanta
+    */
+    > div {
+        position: relative;
+        z-index: 1;
+    }
 }
 
 #vanta-bg {
@@ -98,6 +108,10 @@ textarea {
 
     .w-md-50 {
         width: 50% !important;
+    }
+
+    .w-md-75{
+        width: 75% !important;
     }
 
     .h-md-75 {
@@ -135,17 +149,9 @@ textarea {
         margin-top: 0 !important;
     }
 
-    #hero-section {      
-        background-image: linear-gradient(
-          90deg,
-          var(--bs-secondary) 50%,
-          transparent 50%
-        ),
-        url("/images/800x600.webp");
-        background-size: contain;
-        background-position: 100%;
-        background-repeat: no-repeat;
-    }
+    /* A regra de #hero-section que estava aqui
+      foi removida pois não é mais necessária.
+    */
 }
 
 .btn-download {
