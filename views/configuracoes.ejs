@@ -70,7 +70,6 @@
                   <h5 class="modal-title" id="alterar-email-modal-label">Alterar Email</h5>
                 </div>
                 <div class="modal-body">
-                    <!-- <p>Email Atual: <span class="fw-bold"><%= currentUser.email %></span></p> -->
                     <form id="form-alterar-email" class="d-flex flex-column">
                         <label for="alterar-email-input" class="form-label">Email:</label>
                         <input id="alterar-email-input" class="form-control mb-2" type="email" maxlength="254" required>
@@ -120,6 +119,10 @@
                 </div>
                 <div class="modal-body">
                     <p>Você tem certeza que deseja excluir a sua conta?<span class="text-danger">Essa ação é permanente e irreversível.</span></p>
+                    
+                    <div id="excluir-conta-alert" class="alert d-none" role="alert">
+                        </div>
+
                     <form id="form-excluir-conta" class="d-flex flex-column">
                       <label for="excluir-conta-senha" class="form-label">Senha:</label>
                       <input id="excluir-conta-senha" class="form-control mb-3" type="password" minlength="8" maxlength="100" required>
