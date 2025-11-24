@@ -148,6 +148,14 @@ app.get('/politica-de-privacidade', (req, res) => {
   res.render('politica-de-privacidade');
 });
 
+app.get('/esqueceu-email', (req, res) => {
+  res.render('esqueceu-email');
+});
+
+app.get('/esqueceu-senha', (req, res) => {
+  res.render('esqueceu-senha');
+});
+
 // app.get('/contato', (req, res) => {
 //   res.render('contato', {
 //     user: req.user
