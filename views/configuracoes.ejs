@@ -37,7 +37,7 @@
                     <p class="mb-0">Excluir Conta</p>
                 </div>
                 <div class="col-5 text-end">
-                    <button id="excluir-conta-btn" class="btn btn-danger text-white rounded-3" data-bs-toggle="modal" data-bs-target="#excluir-conta-modal">Excluir Conta</button>
+                    <button id="excluir-conta-btn" class="btn btn-danger rounded-3" data-bs-toggle="modal" data-bs-target="#excluir-conta-modal">Excluir Conta</button>
                 </div>
             </div>
         </div>
@@ -120,8 +120,7 @@
                 <div class="modal-body">
                     <p>Você tem certeza que deseja excluir a sua conta?<span class="text-danger">Essa ação é permanente e irreversível.</span></p>
                     
-                    <div id="excluir-conta-alert" class="alert d-none" role="alert">
-                        </div>
+                    <div id="excluir-conta-alert" class="alert d-none" role="alert"></div>
 
                     <form id="form-excluir-conta" class="d-flex flex-column">
                       <label for="excluir-conta-senha" class="form-label">Senha:</label>
@@ -134,8 +133,8 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Cancelar</button>
-                  <button id="excluir-conta-submit-btn" type="submit" class="btn btn-danger text-white" form="form-excluir-conta" value="Submit">Excluir Conta</button>
-                  <button id="excluir-conta-submit-btn-wait" type="submit" class="btn btn-danger text-white d-none" form="form-excluir-conta" disabled><div class="spinner-border spinner-border-sm me-2" role="status"></div>Excluir Conta</button>
+                  <button id="excluir-conta-submit-btn" type="submit" class="btn btn-danger" form="form-excluir-conta" value="Submit">Excluir Conta</button>
+                  <button id="excluir-conta-submit-btn-wait" type="submit" class="btn btn-danger d-none" form="form-excluir-conta" disabled><div class="spinner-border spinner-border-sm me-2" role="status"></div>Excluir Conta</button>
                 </div>
               </div>
             </div>

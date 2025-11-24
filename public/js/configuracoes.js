@@ -1,9 +1,4 @@
-// const alterarNomeInput = document.getElementById("alterar-nome-input");
-// alterarNomeInput.value = document.currentScript.dataset.nomeatual;
-
 document.getElementById("alterar-nome-input").value = document.currentScript.dataset.nomeatual;
-
-// const alterarEmailInput = document.getElementById("alterar-email-input");
 
 document.addEventListener("DOMContentLoaded", function() {
     // Ativar/Desativar alert dentro do modal de alterar nome
@@ -99,7 +94,7 @@ async function alterarNome(dados) {
     alterarNomeSubmitBtnWait.classList.remove("d-none");
 
     try {
-        const response = await fetch('/api/users/alterar-nome', {
+        const res = await fetch('/api/users/alterar-nome', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -107,22 +102,21 @@ async function alterarNome(dados) {
             body: JSON.stringify(dados)
         });
 
-        const res = await response.json();
+        const data = await res.json();
 
-        if (res.success) {
+        if (data.success) {
             window.location.reload();
         } else {
-            error(res.message || MENSAGEM_ERRO_PADRAO);
-            alterarNomeSubmitBtn.classList.remove("d-none");
-            alterarNomeSubmitBtnWait.classList.add("d-none");
+            error(data.message || MENSAGEM_ERRO_PADRAO);
         }
 
     } catch (error) {
         console.error("error", 'Erro:', error);
         error(MENSAGEM_ERRO_PADRAO);
-        alterarNomeSubmitBtn.classList.remove("d-none");
-        alterarNomeSubmitBtnWait.classList.add("d-none");
     }
+
+    alterarNomeSubmitBtn.classList.remove("d-none");
+    alterarNomeSubmitBtnWait.classList.add("d-none");
 }
 
 async function alterarEmail(dados) {
@@ -154,16 +148,15 @@ async function alterarEmail(dados) {
             window.location.reload();
         } else {
             error(res.message || MENSAGEM_ERRO_PADRAO);
-            alterarEmailSubmitBtn.classList.remove("d-none");
-            alterarEmailSubmitBtnWait.classList.add("d-none");
         }
 
     } catch (error) {
         console.error('Erro:', error);
         error(MENSAGEM_ERRO_PADRAO);
-        alterarEmailSubmitBtn.classList.remove("d-none");
-        alterarEmailSubmitBtnWait.classList.add("d-none");
     }
+
+    alterarEmailSubmitBtn.classList.remove("d-none");
+    alterarEmailSubmitBtnWait.classList.add("d-none");
 }
 
 async function alterarSenha(dados) {
@@ -195,16 +188,15 @@ async function alterarSenha(dados) {
             window.location.reload();
         } else {
             error(res.message || MENSAGEM_ERRO_PADRAO);
-            alterarSenhaSubmitBtn.classList.remove("d-none");
-            alterarSenhaSubmitBtnWait.classList.add("d-none");
         }
 
     } catch (error) {
         console.error('Erro:', error);
         error(MENSAGEM_ERRO_PADRAO);
-        alterarSenhaSubmitBtn.classList.remove("d-none");
-        alterarSenhaSubmitBtnWait.classList.add("d-none");
     }
+
+    alterarSenhaSubmitBtn.classList.remove("d-none");
+    alterarSenhaSubmitBtnWait.classList.add("d-none");
 }
 
 async function excluirConta(senha) {
@@ -215,7 +207,7 @@ async function excluirConta(senha) {
     excluirContaSubmitBtnWait.classList.remove("d-none");
 
     try {
-        const response = await fetch('/api/users/excluir-conta', {
+        const res = await fetch('/api/users/excluir-conta', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -223,20 +215,19 @@ async function excluirConta(senha) {
             body: JSON.stringify({senha})
         });
 
-        const res = await response.json();
+        const data = await res.json();
 
-        if (res.success) {
+        if (data.success) {
             window.location.href = '/';
         } else {
-            error(res.message || MENSAGEM_ERRO_PADRAO);
-            excluirContaSubmitBtn.classList.remove("d-none");
-            excluirContaSubmitBtnWait.classList.add("d-none");
+            error(data.message || MENSAGEM_ERRO_PADRAO);
         }
 
     } catch (error) {
         console.error('Erro:', error);
         error(MENSAGEM_ERRO_PADRAO);
-        excluirContaSubmitBtn.classList.remove("d-none");
-        excluirContaSubmitBtnWait.classList.add("d-none");
     }
+
+    excluirContaSubmitBtn.classList.remove("d-none");
+    excluirContaSubmitBtnWait.classList.add("d-none");
 }

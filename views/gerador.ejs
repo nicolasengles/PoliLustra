@@ -36,15 +36,16 @@
                 </select>
                 <label for="descricao-input" class="form-label mt-3">Descrição:</label>
                 <textarea id="descricao-input" class="form-control" rows="4" placeholder="Descreva a imagem que deseja gerar..."></textarea>
-                <button id="gerar-btn" class="btn btn-primary mt-3">Gerar Imagem</button>
-
-                <button id="download-btn-gerador" 
-                    type="button"
-                    class="btn btn-success mt-3 d-none" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#download-modal">
-                    Baixar Imagem
-                </button>
+                <div class="d-flex mt-3">
+                    <button id="gerar-btn" class="btn btn-primary">Gerar Imagem</button>
+                    <button id="download-btn"
+                        type="button"
+                        class="btn btn-secondary ms-2 d-none"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#download-modal">
+                        Baixar Imagem
+                    </button>
+                </div>
 
                 <div class="alert w-80 mt-4 d-none"></div>
             </form>
@@ -59,7 +60,6 @@
                 <div class="modal-body">
                     <p>Escolha o formato desejado para o download:</p>
                     <select name="formato" id="format-select" class="form-select mb-3">
-                        <option value="">-- Escolha um formato --</option>
                         <option value="f_jpg">JPG (Padrão, menor)</option>
                         <option value="f_png">PNG (Melhor qualidade)</option>
                     </select>

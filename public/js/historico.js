@@ -1,50 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('historico-container');
-    if (container) {
-        container.addEventListener('click', async (event) => {
-            if (event.target.classList.contains('btn-excluir')) {
-                const imageId = event.target.dataset.id;
-
-                if (!confirm('Tem certeza que deseja excluir esta imagem? Esta ação não pode ser desfeita.')) {
-                    return;
-                }
-
-                try {
-                    const response = await fetch(`/api/ia/history/${imageId}`, {
-                        method: 'DELETE'
-                    });
-
-                    const data = await response.json();
-
-                    if (response.ok) {
-                        success(data.message);
-                        event.target.closest('.image-card').remove();
-
-                    } else {
-                        throw new Error(data.message);
-                    }
-
-                } catch (error) {
-                    console.error('Erro ao excluir:', error);
-                    error('Erro: ' + error.message);
-                }
-            }
-        });
-    }
-
     const downloadModal = document.getElementById('download-modal');
 
     if (downloadModal) {
         
-        const downloadSubmitBtn = document.getElementById('download-submit-btn');
+        const downloadBtn = document.getElementById('download-btn');
         const formatSelect = document.getElementById('format-select');
 
         downloadModal.addEventListener('show.bs.modal', (event) => {
             try {
                 const triggerButton = event.relatedTarget; 
                 const imageUrl = triggerButton.dataset.imageUrl;
-
-                console.log('Transferindo URL para o modal:', imageUrl);
 
                 if (!imageUrl) {
                     console.error('Falha na transferência! O botão não tem data-image-url.');
@@ -54,12 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 downloadModal.dataset.imageUrl = imageUrl;
 
             } catch (error) {
-                console.error('Erro no evento show.bs.modal:', error);
-                error('Ocorreu um erro ao preparar o download. Verifique o console (F12).');
+                console.error('Erro:', error);
+                error('Ocorreu um erro ao preparar o download. Tente novamente.' || MENSAGEM_ERRO_PADRAO);
             }
         });
 
-        downloadSubmitBtn.addEventListener('click', () => {
+        downloadBtn.addEventListener('click', () => {
             const baseUrl = downloadModal.dataset.imageUrl;
 
             if (!baseUrl) {
@@ -76,8 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const finalUrl = baseUrl.replace('/upload/', `/upload/fl_attachment,${formatFlag}/`);
-            
-            console.log('Abrindo URL final:', finalUrl);
 
             const link = document.createElement('a');
             link.href = finalUrl;
@@ -115,4 +78,28 @@ document.addEventListener('DOMContentLoaded', () => {
             descricaoElement.textContent = descricao;
         });
     }
+
+    document.getElementById('excluir-imagem-modal').addEventListener('show.bs.modal', (event) => {
+        event.currentTarget.dataset.imageId = event.relatedTarget.dataset.id;
+    });
 });
+
+async function excluirImagem() {
+    imageId = document.getElementById('excluir-imagem-modal').dataset.imageId;
+    try {
+        const response = await fetch(`/api/ia/history/${imageId}`, {
+            method: 'DELETE'
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById(`image-card-${imageId}`).remove();
+            bootstrap.Modal.getInstance(document.getElementById('excluir-imagem-modal')).hide();
+        } else {
+            alert(data.message || MENSAGEM_ERRO_PADRAO);
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert(MENSAGEM_ERRO_PADRAO);
+    }
+}

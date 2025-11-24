@@ -14,7 +14,7 @@
                 <% if (imagens && imagens.length > 0) { %>
                     <% imagens.forEach(img => { %>
                         
-                        <div class="card shadow-sm mx-3 mb-4 image-card" style="width: 400px;">
+                        <div id="image-card-<%= img._id %>" class="card shadow-sm mx-3 mb-4 image-card" style="width: 400px;">
                
                             <img src="<%= img.imageUrl %>" class="card-img-top" alt="<%= img.assunto || 'Imagem gerada' %>" style="height: 250px; object-fit: cover;">
                             
@@ -29,12 +29,12 @@
                                         data-prompt="<%= img.prompt %>"
                                         data-materia="<%= img.materia %>"
                                         data-assunto="<%= img.assunto %>"
-                                        data-descricao="<%= img.prompt_personalizado %>">
+                                        data-descricao="<%= img.descricao %>">
                                     Detalhes
                                 </button>
 
-                                <button class="btn btn-danger btn-sm btn-outline-dark rounded-3 btn-excluir"
-                                        data-id="<%= img._id %>">
+                                <button class="btn btn-danger btn-sm btn-outline-dark rounded-3"
+                                        data-id="<%= img._id %>" data-bs-toggle="modal" data-bs-target="#excluir-imagem-modal">
                                     Excluir
                                 </button>
                             </div>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Cancelar</button>
-                  <button id="download-submit-btn" type="button" class="btn btn-primary">Baixar</button> 
+                  <button id="download-btn" type="button" class="btn btn-primary">Baixar</button> 
                 </div>
               </div>
             </div>
@@ -75,7 +75,6 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="detalhes-modal-label">Detalhes da Imagem</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -101,6 +100,23 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Fechar</button>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="excluir-imagem-modal" tabindex="-1" aria-labelledby="excluir-imagem-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="excluir-imagem-modal-label">Excluir Imagem</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Você tem certeza que deseja excluir a sua conta?<span class="text-danger">Essa ação é permanente e irreversível.</span></p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-dark rounded-3" data-bs-dismiss="modal">Cancelar</button>
+                  <button id="excluir-imagem-btn" type="button" class="btn btn-danger btn-outline-dark rounded-3" onclick="excluirImagem()">Excluir</button> 
                 </div>
               </div>
             </div>

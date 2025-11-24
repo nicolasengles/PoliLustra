@@ -140,73 +140,28 @@ app.get('/termos-e-condicoes', (req, res) => {
   res.render('termos-e-condicoes');
 });
 
-app.get('/checksession', (req, res) => {
-  res.send(req.session);
-});
-
 app.get('/politica-de-privacidade', (req, res) => {
   res.render('politica-de-privacidade');
 });
 
-app.get('/esqueceu-email', (req, res) => {
-  res.render('esqueceu-email');
-});
-
-app.get('/esqueceu-senha', (req, res) => {
-  res.render('esqueceu-senha');
-});
-
-// app.get('/contato', (req, res) => {
-//   res.render('contato', {
-//     user: req.user
-//   });
-// });
-
 app.post('/api/ia/generate', protect, async (req, res) => {
   try {
-    // 1. RECEBER OS CAMPOS ESTRUTURADOS DO CORPO DA REQUISIÇÃO
-    const { 
-      materia,
-      assunto,
-      estilo,
-      prompt_personalizado, 
-      output_format = 'webp', 
-      negative_prompt = '' 
-    } = req.body;
+    const { materia, assunto, estilo, descricao } = req.body;
 
-    // 2. VALIDAÇÃO DOS CAMPOS OBRIGATÓRIOS
-    // Garante que o frontend enviou as informações necessárias.
-    if (!materia || !assunto || !prompt_personalizado) {
-        return res.status(400).json({ message: 'Os campos matéria, assunto e prompt_personalizado são obrigatórios.' });
+    if (!req.body.materia || !assunto || !descricao) {
+        return res.status(400).json({ message: 'Os campos matéria, assunto e descrição são obrigatórios.' });
     }
 
-    // 3. CONSTRUÇÃO DO PROMPT FINAL
-    // Criamos um prompt descritivo a partir das peças, otimizado para a IA.
-    // const finalPrompt = `Imagem educacional para uma aula de ${materia} sobre ${assunto}. A cena deve ilustrar vividamente "${prompt_personalizado}". Estilo de arte digital, detalhado, cinematográfico e claro.`;
-    const finalPrompt = `Imagem educacional para uma aula de ${materia} sobre ${assunto}. A cena deve ilustrar vividamente "${prompt_personalizado}". Estilo de arte tipo ${estilo}.`;
-    
-    console.log(`Prompt Construído: "${finalPrompt}"`);
+    const finalPrompt = `Imagem educacional para uma aula de ${materia} sobre ${assunto}. A cena deve ilustrar "${descricao}" no seguinte estilo de arte: ${estilo}.`;
 
-    // 4. TRADUÇÃO VIA MICROSERVIÇO
-    console.log('Chamando microserviço de tradução...');
     const TRANSLATION_SERVICE_URL = 'http://localhost:5001/translate';
 
     const transResponse = await axios.post(TRANSLATION_SERVICE_URL, { text: finalPrompt });
     const translatedPrompt = transResponse.data.translatedText;
 
-    let translatedNegativePrompt = '';
-    if (negative_prompt) {
-      const transNegativeResponse = await axios.post(TRANSLATION_SERVICE_URL, { text: negative_prompt });
-      translatedNegativePrompt = transNegativeResponse.data.translatedText;
-    }
-
-    // 5. PREPARAÇÃO E CHAMADA À API DE IA (STABILITY AI)
     const formData = new FormData();
     formData.append('prompt', translatedPrompt);
-    formData.append('output_format', output_format);
-    if (translatedNegativePrompt) {
-      formData.append('negative_prompt', translatedNegativePrompt);
-    }
+    formData.append('output_format', 'webp');
     
     const responseFromStability = await axios.post(
       `https://api.stability.ai/v2beta/stable-image/generate/core`,
@@ -225,7 +180,6 @@ app.post('/api/ia/generate', protect, async (req, res) => {
       throw new Error(`${responseFromStability.status}: ${responseFromStability.data.toString()}`);
     }
 
-    // 6. UPLOAD DA IMAGEM PARA O CLOUDINARY
     const imageBuffer = Buffer.from(responseFromStability.data);
     const cloudinaryUpload = () => {
       return new Promise((resolve, reject) => {
@@ -241,81 +195,54 @@ app.post('/api/ia/generate', protect, async (req, res) => {
     };
     const uploadResult = await cloudinaryUpload();
     const imageUrl = uploadResult.secure_url;
-    
-    // 7. SALVAR O REGISTRO COMPLETO NO BANCO DE DADOS
+
     const imageLog = new Image({
         imageUrl: imageUrl,
-        prompt: finalPrompt, // O prompt completo que nós construímos
-        materia: materia, // O "ingrediente" original
-        assunto: assunto, // O "ingrediente" original
-        prompt_personalizado: prompt_personalizado, // O "ingrediente" original
+        prompt: finalPrompt,
+        materia: materia,
+        assunto: assunto,
+        descricao: descricao,
         user: req.user._id,
     });
     await imageLog.save();
 
-    // 8. ENVIAR RESPOSTA DE SUCESSO
-    return res.status(200).json({ 
-      message: 'Imagem gerada com sucesso!', 
+    return res.status(200).json({
+      success: true,
       imageUrl: imageUrl 
     });
 
   } catch (error) {
-    console.error("Erro na rota de geração de imagem:", error.response ? (error.response.data.toString() || error.message) : error.message);
-    return res.status(500).json({ message: 'Ocorreu um erro ao gerar a imagem.' });
+    console.error("Erro:", error.response ? (error.response.data.toString() || error.message) : error.message);
+    return res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
-});
-
-app.get('/api/ia/history', protect, async (req, res) => {
-  try {
-    const fotoS = await Image.find({user:req.user._id}).sort({createdAt:-1});
-
-    return res.status(200).json({ message: 'Histórico encontrado:', imagens: fotoS});
-
-  } catch (error) {
-    console.error("Erro ao carregar o histórico:", error.response ? error.response.data : error.message);
-    return res.status(500).json({ message: 'Ocorreu um erro ao encontrar o histórico'});
-  }
-
 });
 
 app.delete('/api/ia/history/:id', protect, async (req, res) => {
   try {
-    // 1. ENCONTRAR A IMAGEM NO BANCO DE DADOS
-    // Usamos o ID que veio como parâmetro na URL (req.params.id)
     const image = await Image.findById(req.params.id);
 
-    // 2. VERIFICAÇÃO DE SEGURANÇA 1: A IMAGEM EXISTE?
-    // Se findById não encontrar nada, ele retorna null.
     if (!image) {
       return res.status(404).json({ message: 'Imagem não encontrada.' });
     }
 
-    // 3. VERIFICAÇÃO DE SEGURANÇA 2: O USUÁRIO É O DONO DA IMAGEM?
-    // Comparamos o ID do dono da imagem (image.user) com o ID do usuário
-    // que está logado (req.user._id), que o middleware 'protect' nos deu.
-    // Usamos .toString() para garantir uma comparação correta entre os ObjectIDs.
     if (image.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({ message: 'Não autorizado. Você não é o dono desta imagem.' });
+      return res.status(401).json({ message: 'Não autorizado.' });
     }
 
-    // 4. DELETAR A IMAGEM DO CLOUDINARY
-    // Primeiro, precisamos extrair o 'public_id' da URL da imagem.
-    // Ex: "https://.../upload/v123/public_id.webp" -> "public_id"
     const publicId = image.imageUrl.split('/').pop().split('.')[0];
-    
-    // Chamamos a função 'destroy' do uploader do Cloudinary
+
     await cloudinary.uploader.destroy(publicId);
 
-    // 5. DELETAR A IMAGEM DO BANCO DE DADOS
-    // Agora que o arquivo foi removido da nuvem, removemos o registro do nosso DB.
     await Image.findByIdAndDelete(req.params.id);
 
-    // 6. ENVIAR RESPOSTA DE SUCESSO
-    return res.status(200).json({ message: 'Imagem deletada com sucesso.' });
+    return res.status(200).json({
+      success: true,
+      message: 'Imagem deletada com sucesso.'
+    });
 
   } catch (error) {
-    console.error("Erro ao deletar imagem:", error.message);
-    return res.status(500).json({ message: 'Ocorreu um erro interno ao deletar a imagem.' });
+    console.error("Erro:", error.message);
+    return res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
 
@@ -358,7 +285,7 @@ app.post('/api/users/register', async (req, res) => {
       return res.status(400).json({ message: errorMessage });
     }
 
-    console.error('Erro no registo:', error);
+    console.error('Erro:', error);
     res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
@@ -392,64 +319,6 @@ app.post('/api/users/login', async (req, res) => {
   }
 });
 
-app.post('/api/users/forgot-password', async (req, res) => {
-  let user; // <-- 1. Declaramos 'user' aqui fora com 'let'
-
-  try {
-    const { email } = req.body;
-    user = await User.findOne({ email }); // <-- 2. Atribuímos o valor aqui (sem 'const')
-
-    if (!user) {
-      return res.status(200).json({ message: 'Se um utilizador com este e-mail existir, um link de recuperação foi enviado.' });
-    }
-
-    // ... (resto da lógica de gerar token e enviar e-mail continua igual)
-    const resetToken = crypto.randomBytes(20).toString('hex');
-
-    user.passwordResetToken = crypto
-      .createHash('sha256')
-      .update(resetToken)
-      .digest('hex');
-
-    user.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-    await user.save();
-
-    const resetUrl = `http://${req.get('host')}/reset-password.html?token=${resetToken}`;
-    
-    // Adicione o console.log para teste
-    console.log('Link de Reset (para teste):', resetUrl);
-
-    const message = `Você recebeu este e-mail porque solicitou uma redefinição de senha...`;
-    
-    // (Lembre-se de adicionar a sua configuração do Nodemailer aqui)
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        }
-    });
-    await transporter.sendMail({
-      to: user.email,
-      subject: 'Link para Redefinição de Senha',
-      text: message
-    });
-
-    res.status(200).json({ message: 'Um e-mail de recuperação foi enviado.' });
-
-  } catch (error) {
-    // 3. Agora o 'catch' tem acesso à variável 'user'
-    if (user) {
-        user.passwordResetToken = undefined;
-        user.passwordResetExpires = undefined;
-        // Precisamos de usar um 'await' aqui também para garantir que salva
-        await user.save({ validateBeforeSave: false }); 
-    }
-    console.error('Erro no forgot-password:', error);
-    res.status(500).json({ message: 'Erro ao enviar e-mail de recuperação.' });
-  }
-});
-
 app.post('/api/users/reset-password/:token', async (req, res) => {
   try {
     const hashedToken = crypto
@@ -463,7 +332,6 @@ app.post('/api/users/reset-password/:token', async (req, res) => {
     });
 
     if (!user) {
-      // Adicionamos 'return' aqui
       return res.status(400).json({ message: 'O token é inválido ou expirou.' });
     }
 
@@ -473,46 +341,13 @@ app.post('/api/users/reset-password/:token', async (req, res) => {
 
     await user.save();
 
-    // Adicionamos 'return' aqui
     return res.status(200).json({ message: 'Senha redefinida com sucesso!' });
 
   } catch (error) {
     console.error('Erro no reset-password:', error);
-    // E aqui também
     return res.status(500).json({ message: 'Erro ao redefinir a senha.' });
   }
 });
-
-// app.put('/api/users/profile', protect, async (req, res) => {
-//   try {
-//     const user = req.user;
-
-//     if (user) {
-//       user.name = req.body.name || user.name;
-//       user.email = req.body.email || user.email;
-
-//       if (req.body.password) {
-//         user.password = req.body.password;
-//       }
-
-//       const updatedUser = await user.save();
-
-//       // Adicionamos 'return' para garantir que a função termina aqui
-//       return res.status(200).json({
-//         _id: updatedUser._id,
-//         name: updatedUser.name,
-//         email: updatedUser.email,
-//       });
-//     } else {
-//       // Adicionamos 'return' aqui também
-//       return res.status(404).json({ message: 'Utilizador não encontrado.' });
-//     }
-//   } catch (error) {
-//     console.error('Erro ao atualizar perfil:', error);
-//     // E aqui também
-//     return res.status(500).json({ message: 'Erro interno do servidor.' });
-//   }
-// });
 
 app.put('/api/users/alterar-nome', protect, async (req, res) => {
   try {

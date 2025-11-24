@@ -11,7 +11,7 @@ const imageSchema = new mongoose.Schema({
   // Nossos novos campos para guardar os "ingredientes" do prompt
   materia: { type: String, required: true },
   assunto: { type: String, required: true },
-  prompt_personalizado: { type: String, required: true },
+  descricao: { type: String, required: true },
 
   user: {
     type: mongoose.Schema.Types.ObjectId,
