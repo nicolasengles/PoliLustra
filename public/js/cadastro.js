@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const dados = {
             name: document.getElementById('name-input').value,
             email: document.getElementById('email-input').value,
+            emailConfirm: document.getElementById('email-confirm-input').value,
             password: document.getElementById('password-input').value,
             passwordConfirm: document.getElementById('password-confirm-input').value
         };
@@ -20,8 +21,15 @@ async function cadastrar(dados) {
     cadastrarBtn.classList.add('d-none');
     cadastrarBtnWait.classList.remove('d-none');
 
+    if (dados.email !== dados.emailConfirm) {
+        error('Os emails não coincidem.');
+        cadastrarBtn.classList.remove('d-none');
+        cadastrarBtnWait.classList.add('d-none');
+        return;
+    }
+
     if (dados.password !== dados.passwordConfirm) {
-        alert('As senhas não coincidem.');
+        error('As senhas não coincidem.');
         cadastrarBtn.classList.remove('d-none');
         cadastrarBtnWait.classList.add('d-none');
         return;
@@ -43,14 +51,14 @@ async function cadastrar(dados) {
         if (res.success) {
             window.location.href = '/gerador'; 
         } else {
-            alert(res.message || MENSAGEM_ERRO_PADRAO);
+            error(res.message || MENSAGEM_ERRO_PADRAO);
             cadastrarBtn.classList.remove('d-none');
             cadastrarBtnWait.classList.add('d-none');
         }
 
     } catch (error) {
         console.log('Erro:', error);
-        alert(MENSAGEM_ERRO_PADRAO);
+        error(MENSAGEM_ERRO_PADRAO);
         cadastrarBtn.classList.remove('d-none');
         cadastrarBtnWait.classList.add('d-none');
     }

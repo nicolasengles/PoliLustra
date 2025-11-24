@@ -3,26 +3,7 @@
 
 document.getElementById("alterar-nome-input").value = document.currentScript.dataset.nomeatual;
 
-// Variáveis de referência para o alerta de exclusão
-const excluirContaAlert = document.getElementById("excluir-conta-alert");
-
-// 📌 Função para exibir o erro no modal de Excluir Conta
-function exibirErroExclusao(message) {
-    if (excluirContaAlert) {
-        excluirContaAlert.textContent = message;
-        excluirContaAlert.classList.remove('d-none', 'alert-success');
-        excluirContaAlert.classList.add('alert-danger');
-    }
-}
-
-// 📌 Função para limpar o erro
-function limparErroExclusao() {
-    if (excluirContaAlert) {
-        excluirContaAlert.classList.add('d-none');
-        excluirContaAlert.textContent = '';
-    }
-}
-
+// const alterarEmailInput = document.getElementById("alterar-email-input");
 
 document.addEventListener("DOMContentLoaded", function() {
     // Ativar/Desativar alert dentro do modal de alterar nome
@@ -64,13 +45,6 @@ document.addEventListener("DOMContentLoaded", function() {
         this.querySelector('.alert').remove();
     });
     
-    // 📌 Limpar o erro do modal de exclusão ao fechar
-    const excluirContaModal = document.getElementById('excluir-conta-modal');
-    excluirContaModal.addEventListener('hidden.bs.modal', function (event) {
-        limparErroExclusao();
-        document.getElementById("form-excluir-conta").reset(); // Limpa o formulário também
-    });
-
     // Alterar nome
     document.getElementById("form-alterar-nome").addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -110,18 +84,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // Excluir conta
     document.getElementById("form-excluir-conta").addEventListener("submit", async (event) => {
         event.preventDefault();
-        limparErroExclusao(); // Limpa alertas antigos antes de uma nova submissão
 
         const senha = document.getElementById("excluir-conta-senha").value;
 
         await excluirConta(senha);
     });
 });
-
-// A função 'error' precisa ser definida para as outras funções de alteração
-// Se as outras funções usam `error(res.message)`, elas precisam de uma função global.
-// Se `error` não estiver definida, defina-a aqui ou use uma função específica para cada modal.
-// Para este exemplo, vou manter o uso de `error` nas outras funções (pressupondo que ela existe).
 
 async function alterarNome(dados) {
     const alterarNomeSubmitBtn = document.getElementById("alterar-nome-submit-btn");
@@ -139,24 +107,19 @@ async function alterarNome(dados) {
             body: JSON.stringify(dados)
         });
 
-        // 📌 Adicionado tratamento para status HTTP
-        if (!response.ok) {
-            const res = await response.json();
-            throw new Error(res.message || `Erro HTTP: ${response.status}`);
-        }
-
         const res = await response.json();
 
         if (res.success) {
             window.location.reload();
         } else {
-            throw new Error(res.message || MENSAGEM_ERRO_PADRAO);
+            error(res.message || MENSAGEM_ERRO_PADRAO);
+            alterarNomeSubmitBtn.classList.remove("d-none");
+            alterarNomeSubmitBtnWait.classList.add("d-none");
         }
 
     } catch (error) {
         console.error("error", 'Erro:', error);
-        error(error.message || MENSAGEM_ERRO_PADRAO); // Use error.message aqui
-    } finally {
+        error(MENSAGEM_ERRO_PADRAO);
         alterarNomeSubmitBtn.classList.remove("d-none");
         alterarNomeSubmitBtnWait.classList.add("d-none");
     }
@@ -184,25 +147,20 @@ async function alterarEmail(dados) {
             },
             body: JSON.stringify(dados)
         });
-        
-        // 📌 Adicionado tratamento para status HTTP
-        if (!response.ok) {
-            const res = await response.json();
-            throw new Error(res.message || `Erro HTTP: ${response.status}`);
-        }
 
         const res = await response.json();
 
         if (res.success) {
             window.location.reload();
         } else {
-            throw new Error(res.message || MENSAGEM_ERRO_PADRAO);
+            error(res.message || MENSAGEM_ERRO_PADRAO);
+            alterarEmailSubmitBtn.classList.remove("d-none");
+            alterarEmailSubmitBtnWait.classList.add("d-none");
         }
 
     } catch (error) {
         console.error('Erro:', error);
-        error(error.message || MENSAGEM_ERRO_PADRAO); // Use error.message aqui
-    } finally {
+        error(MENSAGEM_ERRO_PADRAO);
         alterarEmailSubmitBtn.classList.remove("d-none");
         alterarEmailSubmitBtnWait.classList.add("d-none");
     }
@@ -230,25 +188,20 @@ async function alterarSenha(dados) {
             },
             body: JSON.stringify(dados)
         });
-        
-        // 📌 Adicionado tratamento para status HTTP
-        if (!response.ok) {
-            const res = await response.json();
-            throw new Error(res.message || `Erro HTTP: ${response.status}`);
-        }
 
         const res = await response.json();
 
         if (res.success) {
             window.location.reload();
         } else {
-            throw new Error(res.message || MENSAGEM_ERRO_PADRAO);
+            error(res.message || MENSAGEM_ERRO_PADRAO);
+            alterarSenhaSubmitBtn.classList.remove("d-none");
+            alterarSenhaSubmitBtnWait.classList.add("d-none");
         }
 
     } catch (error) {
         console.error('Erro:', error);
-        error(error.message || MENSAGEM_ERRO_PADRAO); // Use error.message aqui
-    } finally {
+        error(MENSAGEM_ERRO_PADRAO);
         alterarSenhaSubmitBtn.classList.remove("d-none");
         alterarSenhaSubmitBtnWait.classList.add("d-none");
     }
@@ -270,29 +223,19 @@ async function excluirConta(senha) {
             body: JSON.stringify({senha})
         });
 
-        // 🚨 CORREÇÃO CRUCIAL: Captura a resposta 400 (senha incorreta)
-        if (!response.ok) {
-            const res = await response.json();
-            // Lança um erro com a mensagem do backend (ex: "Senha incorreta.")
-            throw new Error(res.message || `Erro HTTP: ${response.status}`);
-        }
-
         const res = await response.json();
 
         if (res.success) {
-            // Sucesso: Redireciona
             window.location.href = '/';
         } else {
-            throw new Error(res.message || MENSAGEM_ERRO_PADRAO);
+            error(res.message || MENSAGEM_ERRO_PADRAO);
+            excluirContaSubmitBtn.classList.remove("d-none");
+            excluirContaSubmitBtnWait.classList.add("d-none");
         }
 
     } catch (error) {
-        console.error('Erro:', error.message || error);
-        // 📌 EXIBE O ERRO NO MODAL
-        exibirErroExclusao(error.message || MENSAGEM_ERRO_PADRAO);
-
-    } finally {
-        // 📌 GARANTE QUE O SPINNER DESAPAREÇA
+        console.error('Erro:', error);
+        error(MENSAGEM_ERRO_PADRAO);
         excluirContaSubmitBtn.classList.remove("d-none");
         excluirContaSubmitBtnWait.classList.add("d-none");
     }

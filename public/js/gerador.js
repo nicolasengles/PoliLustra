@@ -95,13 +95,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } else {
                 console.error("imageUrl não encontrado na resposta da API.");
-                alert("Ops! Ocorreu um erro. Tente novamente.");
+                error("Ops! Ocorreu um erro. Tente novamente.");
                 placeholderText.classList.remove("d-none"); // Mostra o placeholder se der erro
             }
         })
         .catch(error => {
             console.error("Erro:", error);
-            alert("Ops! Ocorreu um erro. Tente novamente.");
+            error("Ops! Ocorreu um erro. Tente novamente.");
             placeholderText.classList.remove("d-none"); // Mostra o placeholder se der erro
         })
         .finally(() => {
@@ -128,11 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 3. Validações
         if (!baseUrl) {
-            alert('Erro! A URL da imagem não foi encontrada.');
+            error('Erro! A URL da imagem não foi encontrada.');
             return;
         }
         if (!formatFlag) {
-            alert('Por favor, selecione um formato para baixar.');
+            error('Por favor, selecione um formato para baixar.');
             return; 
         }
 
