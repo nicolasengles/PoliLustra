@@ -9,9 +9,6 @@ $light: #FAFAFA;
 // $body-color: #1B1C20;
 $body-bg: #F5F5F5;
 
-// Baseado no $secondary (rgb(251, 164, 31)) mas com 70% de opacidade
-// $laranja-transparente: rgba(251, 164, 31, 0.7);
-
 // Módulos Bootstrap
 @import "../../node_modules/bootstrap/scss/_variables.scss";
 @import "../../node_modules/bootstrap/scss/variables-dark.scss";
@@ -26,9 +23,6 @@ $body-bg: #F5F5F5;
 :root {
     --bs-body-font-family: 'Ubuntu', sans-serif;
     --bs-body-font-size: 1.25rem;
-    // --bs-navbar-color: var(--bs-body-color);
-    // --bs-laranja-transparente: #{$laranja-transparente};
-    // --bs-laranja-rgb: #{red($secondary)}, #{green($secondary)}, #{blue($secondary)};
 }
 
 body {
