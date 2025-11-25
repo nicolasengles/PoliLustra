@@ -3,9 +3,9 @@
     <%- include('partials/head', {title: 'Gerador de Imagens Educacionais | PoliLustra'}) %>
     <body>
         <%- include('partials/navbar') %>
-        <div class="d-flex justify-content-around align-items-center my-5 text-center">
+        <main class="d-flex flex-column flex-md-row justify-content-around align-items-center my-4 my-md-5 text-center">
             
-            <div class="w-35 vh-75 rounded-4 border border-dark border-3 d-flex flex-column justify-content-center align-items-center overflow-hidden p-3">
+            <div class="w-90 w-md-35 vh-50 vh-md-75 rounded-4 border border-dark border-3 d-flex flex-column justify-content-center align-items-center overflow-hidden p-3">
                 
                 <img id="imagem-gerada" class="vh-75 d-none" alt="Imagem Gerada" style="object-fit: contain;">
                 
@@ -14,7 +14,7 @@
 
             </div>
             
-            <form id="form-gerador" class="w-35 d-flex flex-column align-items-center text-center">
+            <form id="form-gerador" class="w-80 w-md-35 my-4 my-md-0 d-flex flex-column align-items-center text-center">
                 <h1 class="text-center">Gerador de Imagens</h1>
                 <label for="materia-select" class="form-label mt-3">Matéria:</label>
                 <select name="materia" id="materia-select" class="form-select mb-3">
@@ -47,9 +47,9 @@
                     </button>
                 </div>
 
-                <div class="alert w-80 mt-4 d-none"></div>
+                <div class="alert w-90 w-md-80 mt-4 d-none"></div>
             </form>
-        </div>
+        </main>
 
         <div class="modal fade" id="download-modal" tabindex="-1" aria-labelledby="download-modal-label" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">

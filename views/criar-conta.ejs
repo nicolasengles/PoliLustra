@@ -5,8 +5,8 @@
         <div id="vanta-bg"></div>
     
         <%- include('partials/navbar') %>
-        <div class="d-flex justify-content-center align-items-center flex-grow-1">
-            <div class="bg-white p-5 rounded-4 shadow text-center criar-conta-box mx-auto w-80 w-md-35 my-4">      
+        <main class="d-flex justify-content-center align-items-center flex-grow-1 mobile-min-height" style="min-height: 83vh;">
+            <div class="bg-white p-5 rounded-4 shadow text-center criar-conta-box mx-auto w-90 w-md-35 my-4">      
                 <h1 class="mb-4 criar-conta-title">Criar Conta</h1>
                 <form id="register-form">
                     <div class="mb-4">
@@ -24,9 +24,9 @@
                     <div class="mb-4">
                         <input type="password" class="form-control custom-input" placeholder="Confirme sua Senha" required id="password-confirm-input">
                     </div>
-                    <div class="termos-container">
+                    <div class="d-flex justify-content-center align-items-center mb-4" style="text-wrap: nowrap;">
                         <input type="checkbox" id="aceite-termos" name="aceite-termos" required>
-                        <label for="aceite-termos" class="mb-4">
+                        <label for="aceite-termos" class="ms-2">
                             Aceito os <a href="/termos-e-condicoes" target="_blank">Termos e Condições</a>
                         </label>
                     </div>
@@ -35,7 +35,7 @@
                     <button id="cadastrar-btn-wait" type="submit" class="btn btn-light btn-md border border-dark border-3 d-none" disabled><div class="spinner-border spinner-border-sm me-2" role="status"></div>Cadastrar</button>
                 </form>
             </div>
-        </div>
+        </main>
         <%- include('partials/footer') %>
         
         <script src="/js/criar-conta.js"></script>

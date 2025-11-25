@@ -6,8 +6,8 @@
 
         <%- include('partials/navbar') %>
 
-        <div class="d-flex justify-content-center align-items-center flex-grow-1">
-            <div class="bg-white p-5 rounded-4 shadow text-center login-box mx-auto w-80 w-md-35 my-4"> 
+        <main class="d-flex justify-content-center align-items-center flex-grow-1" style="min-height: 83vh;">
+            <div class="bg-white p-5 rounded-4 shadow text-center login-box mx-auto w-90 w-md-35 my-4"> 
                 <h1 class="mb-4 login-title">Login</h1>
                 <form id="login-form" class="mb-4">
                     <div class="mb-3">
@@ -17,7 +17,6 @@
                         <input type="password" class="form-control custom-input" placeholder="Senha" required id="password-input">
                     </div>
                     <div class="mb-4 d-flex flex-column gap-2">
-                        <a href="/esqueceu-email">Esqueceu sua Senha?</a>
                         <a href="/criar-conta">Ainda não tenho conta</a>
                     </div>
                     <div class="alert mb-4 d-none"></div>
@@ -26,7 +25,7 @@
                 </form>
                 
             </div>
-        </div>
+        </main>
 
         <%- include('partials/footer') %>
         

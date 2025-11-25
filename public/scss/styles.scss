@@ -10,7 +10,7 @@ $light: #FAFAFA;
 $body-bg: #F5F5F5;
 
 // Baseado no $secondary (rgb(251, 164, 31)) mas com 70% de opacidade
-$laranja-transparente: rgba(251, 164, 31, 0.7);
+// $laranja-transparente: rgba(251, 164, 31, 0.7);
 
 // Módulos Bootstrap
 @import "../../node_modules/bootstrap/scss/_variables.scss";
@@ -26,15 +26,13 @@ $laranja-transparente: rgba(251, 164, 31, 0.7);
 :root {
     --bs-body-font-family: 'Ubuntu', sans-serif;
     --bs-body-font-size: 1.25rem;
-    --bs-navbar-color: var(--bs-body-color);
-    
-    --bs-laranja-transparente: #{$laranja-transparente};
-    --bs-laranja-rgb: #{red($secondary)}, #{green($secondary)}, #{blue($secondary)};
+    // --bs-navbar-color: var(--bs-body-color);
+    // --bs-laranja-transparente: #{$laranja-transparente};
+    // --bs-laranja-rgb: #{red($secondary)}, #{green($secondary)}, #{blue($secondary)};
 }
 
-// 1. O 'body' precisa ser o "container" de referência
 body {
-    position: relative; // Essencial para o 'position: absolute' do #vanta-bg
+    position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -42,6 +40,10 @@ body {
 
 textarea {
   resize: none;
+}
+
+.vh-50 {
+    height: 50vh !important;
 }
 
 .vh-75 {
@@ -68,16 +70,12 @@ textarea {
     width: 80% !important;
 }
 
-/* ↓↓↓ CSS DA HERO SECTION ATUALIZADO ↓↓↓
-  Regras de GIF e gradiente removidas.
-  Adicionadas regras para Vanta.js funcionar.
-*/
+.w-90 {
+    width: 90% !important;
+}
+
 #hero-section {      
     position: relative; 
-
-    /* Garante que o conteúdo (o div .w-md-50)
-       fique na frente da animação Vanta
-    */
     > div {
         position: relative;
         z-index: 1;
@@ -94,6 +92,19 @@ textarea {
 }
 
 @media (min-width: map-get($grid-breakpoints, "md")) {
+    .my-md-5 {
+        margin-top: map-get($spacers, 5) !important;
+        margin-bottom: map-get($spacers, 5) !important;
+    }
+
+    .vh-md-75 {
+        height: 75vh !important;
+    }
+
+    .p-md-0 {
+        padding: 0 !important;
+    }
+    
     .w-md-25 {
         width: 25% !important;
     }
@@ -114,12 +125,20 @@ textarea {
         width: 75% !important;
     }
 
+    .w-md-80{
+        width: 80% !important;
+    }
+
     .h-md-75 {
         height: 75% !important;
     }
 
     .mb-md-0 {
         margin-bottom: 0 !important;
+    }
+
+    .mb-md-4 {
+        margin-bottom: map-get($spacers, 4) !important;
     }
 
     .my-md-0 {
@@ -148,22 +167,4 @@ textarea {
     .mt-md-0 {
         margin-top: 0 !important;
     }
-
-    /* A regra de #hero-section que estava aqui
-      foi removida pois não é mais necessária.
-    */
-}
-
-.btn-download {
-
-    width: 100px;
-    display: block;
-    margin-left: 2%;
-}
-
-.btn-excluir{
-
-    width: 100px;
-    display: block;
-    margin-left: 10%;
 }
