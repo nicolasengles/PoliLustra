@@ -39,7 +39,7 @@ async function login(dados) {
 
     } catch (error) {
         console.error('Erro:', error);
-        error( MENSAGEM_ERRO_PADRAO);
+        window.error( MENSAGEM_ERRO_PADRAO);
         loginBtn.classList.remove('d-none');
         loginBtnWait.classList.add('d-none');
     }

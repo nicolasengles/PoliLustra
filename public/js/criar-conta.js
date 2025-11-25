@@ -58,7 +58,7 @@ async function cadastrar(dados) {
 
     } catch (error) {
         console.log('Erro:', error);
-        error(MENSAGEM_ERRO_PADRAO);
+        window.error(MENSAGEM_ERRO_PADRAO);
         cadastrarBtn.classList.remove('d-none');
         cadastrarBtnWait.classList.add('d-none');
     }

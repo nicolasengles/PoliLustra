@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     updateAssuntos();
+
     document.getElementById('materia-select').addEventListener('change', updateAssuntos);
 
     document.getElementById("form-gerador").addEventListener("submit", async (event) => {
@@ -14,6 +15,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         await gerarImagem(dados);
     });
+
+    const btnDownloadModal = document.getElementById("download-submit-btn");
+    if(btnDownloadModal) {
+        btnDownloadModal.addEventListener("click", downloadImage);
+    }
 });
 
 function updateAssuntos() {
@@ -45,6 +51,8 @@ async function gerarImagem(dados) {
     const downloadBtn = document.getElementById("download-btn");
     const placeholderText = document.getElementById("placeholder-text");
 
+    const downloadModal = document.getElementById("download-modal");
+
     gerarBtn.disabled = true;
     imagemGerada.classList.add("d-none");
     placeholderText.classList.add("d-none");
@@ -58,36 +66,43 @@ async function gerarImagem(dados) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(dados)
-        })
+        });
 
-        const data = res.json();
+        const data = await res.json();
 
         if (data.success && data.imageUrl) {
             imagemGerada.src = data.imageUrl;
             imagemGerada.classList.remove("d-none");
+
             downloadModal.dataset.imageUrl = data.imageUrl;
             downloadBtn.classList.remove("d-none");
         } else {
+            console.error("Erro:", data.message);
             error(data.message || MENSAGEM_ERRO_PADRAO);
             placeholderText.classList.remove("d-none");
         }
-
+    } catch (err) {
+        console.error('Erro:', err);
+        error(MENSAGEM_ERRO_PADRAO);
+    } finally {
         spinner.classList.add("d-none");
         gerarBtn.disabled = false;
-    } catch (error) {
-        console.error('Erro:', error);
-        error(MENSGAGEM_ERRO_PADRAO);
     }
 }
 
-async function downloadImage() {
-    const url = downloadModal.dataset.imageUrl;
+function downloadImage() {
+    const downloadModalElement = document.getElementById("download-modal");
+
+    const url = downloadModalElement.dataset.imageUrl;
+
+    const formato = document.getElementById('format-select').value;
 
     const link = document.createElement('a');
-    link.href = url.replace('/upload/', `/upload/fl_attachment,${document.getElementById('format-select').value}/`);
+    link.href = url.replace('/upload/', `/upload/fl_attachment,${formato}/`);
+    
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
-    bootstrap.Modal.getInstance(downloadModal).hide();
+    bootstrap.Modal.getInstance(downloadModalElement).hide();
 }

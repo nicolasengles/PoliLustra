@@ -110,7 +110,7 @@ app.post('/api/ia/gerar-imagem', protect, async (req, res) => {
   try {
     const { materia, assunto, estilo, descricao } = req.body;
 
-    if (!req.body.materia || !assunto || !descricao) {
+    if (!materia || !assunto || !descricao) {
         return res.status(400).json({ message: 'Os campos matéria, assunto e descrição são obrigatórios.' });
     }
 

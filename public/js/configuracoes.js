@@ -112,7 +112,7 @@ async function alterarNome(dados) {
 
     } catch (error) {
         console.error("error", 'Erro:', error);
-        error(MENSAGEM_ERRO_PADRAO);
+        window.error(MENSAGEM_ERRO_PADRAO);
     }
 
     alterarNomeSubmitBtn.classList.remove("d-none");
@@ -152,7 +152,7 @@ async function alterarEmail(dados) {
 
     } catch (error) {
         console.error('Erro:', error);
-        error(MENSAGEM_ERRO_PADRAO);
+        window.error(MENSAGEM_ERRO_PADRAO);
     }
 
     alterarEmailSubmitBtn.classList.remove("d-none");
@@ -192,7 +192,7 @@ async function alterarSenha(dados) {
 
     } catch (error) {
         console.error('Erro:', error);
-        error(MENSAGEM_ERRO_PADRAO);
+        window.error(MENSAGEM_ERRO_PADRAO);
     }
 
     alterarSenhaSubmitBtn.classList.remove("d-none");
@@ -225,7 +225,7 @@ async function excluirConta(senha) {
 
     } catch (error) {
         console.error('Erro:', error);
-        error(MENSAGEM_ERRO_PADRAO);
+        window.error(MENSAGEM_ERRO_PADRAO);
     }
 
     excluirContaSubmitBtn.classList.remove("d-none");
