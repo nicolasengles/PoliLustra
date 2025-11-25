@@ -174,7 +174,7 @@ app.post('/api/ia/gerar-imagem', protect, async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Erro (/api/ia/gerar-imagem):", error.response ? (error.response.data.toString() || error.message) : error.message);
+    console.error("Erro (/api/ia/gerar-imagem):", error);
     return res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });

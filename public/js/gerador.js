@@ -43,7 +43,7 @@ async function gerarImagem(dados) {
     const spinner = document.getElementsByClassName("spinner-border")[0];
     const gerarBtn = document.getElementById("gerar-btn");
     const downloadBtn = document.getElementById("download-btn");
-    const placeholderText = document.getElementById("placeholder-text").classList.add("d-none");
+    const placeholderText = document.getElementById("placeholder-text");
 
     gerarBtn.disabled = true;
     imagemGerada.classList.add("d-none");
