@@ -9,10 +9,11 @@
             
             <div class="d-flex flex-column justify-content-center align-items-center w-75 w-md-50">
                 <img src="images/logo_hor.png" alt="Logo PoliLustra" class="img-fluid w-md-75 mb-5">
-                 <p class="w-md-75 fs-2 mb-5 text-black">Dê uma cara nova às suas apresentações com imagens geradas por Inteligência Artificial!</p>
-                <div class="d-flex justify-content-center align-items-center">
-                    <button onclick="window.location.href = '/login';" class="btn btn-lg btn-light border border-dark border-3 mx-1">Log In</button>
-                    <button onclick="window.location.href = '/criar-conta';" class="btn btn-lg btn-primary border border-dark border-3 mx-1">Criar Conta</button>
+                 <p class="w-md-75 fs-2 mb-5">Dê uma cara nova às suas apresentações com imagens geradas por Inteligência Artificial!</p>
+                <div class="d-flex justify-content-center align-items-center fw-bold mt-5">
+                    Deslize para ver mais
+                    <br>
+                    &darr;&darr;&darr;
                 </div>
             </div>
         </div>
@@ -29,7 +30,7 @@
         <div class="d-flex flex-column flex-md-row justify-content-around align-items-center text-center m-5">
             <div class="d-flex flex-column align-items-center w-md-50">
                 <h2 class="fw-bold mb-4">Como Funciona?</h2>
-                <p>Para usar o gerador de imagens, basta ir à página do gerador, selecionar a matéria, o conteúdo e estilo desejados.
+                <p>Para usar o gerador de imagens, basta fazer login, ir à página do gerador, selecionar a matéria, o conteúdo e estilo desejados.
  Depois, é só descrever o que deseja gerar e sua imagem estará pronta!</p>
                 <button onclick="window.location.href = '/gerador';"
  class="btn btn-light btn-lg border border-dark border-3 mx-1 my-4">
@@ -40,7 +41,7 @@
         </div>
         <hr>
     
-         <h2 class="fw-bold m-4 text-center">Feito para a comunidade Poliedro</h2>
+        <h2 class="fw-bold m-4 text-center">Feito para a comunidade Poliedro</h2>
         <div class="d-flex flex-column flex-md-row justify-content-around text-center m-4">
             <div class="w-md-35 mb-4">
                 <h3 class="fw-bold mb-4">Para Professores</h3>
@@ -53,13 +54,20 @@
  As imagens geradas podem ser utilizadas para apresentações e visualização dos conteúdos.</p>
             </div>
         </div>
+        <hr>
+        <div class="d-flex flex-column align-items-center align-self-center m-4 mb-5 text-center">
+            <h4 class="mb-4">Faça login ou crie uma conta para começar!</h4>
+            <div>
+                <button onclick="window.location.href = '/login';" class="btn btn-lg btn-light border border-dark border-3 mx-1">Log In</button>
+                <button onclick="window.location.href = '/criar-conta';" class="btn btn-lg btn-primary border border-dark border-3 mx-1">Criar Conta</button>
+            </div>
+        </div>
         
         <%- include('partials/footer') %>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
         <script>
-            // CORREÇÃO: Aplicando ao ID "#hero-section"
             VANTA.WAVES({
             el: "#hero-section",
             mouseControls: true,
