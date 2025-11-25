@@ -19,7 +19,7 @@ async function login(dados) {
     loginBtnWait.classList.remove('d-none');
 
     try {
-        const response = await fetch('/api/users/login', {
+        const response = await fetch('/api/conta/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

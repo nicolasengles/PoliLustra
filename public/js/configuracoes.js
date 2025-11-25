@@ -94,7 +94,7 @@ async function alterarNome(dados) {
     alterarNomeSubmitBtnWait.classList.remove("d-none");
 
     try {
-        const res = await fetch('/api/users/alterar-nome', {
+        const res = await fetch('/api/conta/alterar-nome', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -134,7 +134,7 @@ async function alterarEmail(dados) {
     }
 
     try {
-        const response = await fetch('/api/users/alterar-email', {
+        const response = await fetch('/api/conta/alterar-email', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -174,7 +174,7 @@ async function alterarSenha(dados) {
     }
 
     try {
-        const response = await fetch('/api/users/alterar-senha', {
+        const response = await fetch('/api/conta/alterar-senha', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -207,7 +207,7 @@ async function excluirConta(senha) {
     excluirContaSubmitBtnWait.classList.remove("d-none");
 
     try {
-        const res = await fetch('/api/users/excluir-conta', {
+        const res = await fetch('/api/conta/excluir-conta', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

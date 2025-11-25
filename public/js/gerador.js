@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function() {
-    updateTemas();
-    document.getElementById('materia-select').addEventListener('change', updateTemas);
+    updateAssuntos();
+    document.getElementById('materia-select').addEventListener('change', updateAssuntos);
 
     document.getElementById("form-gerador").addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const dados = {
             materia: document.getElementById("materia-select").value,
-            assunto: document.getElementById("tema-select").value,
+            assunto: document.getElementById("assunto-select").value,
             estilo: document.getElementById("estilo-select").value,
             descricao: document.getElementById("descricao-input").value
         };
@@ -16,25 +16,25 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-function updateTemas() {
-    const temasPorMateria = {
+function updateAssuntos() {
+    const assuntosPorMateria = {
         "Física": ['Mecânica', 'Óptica', 'Eletricidade', 'Termodinâmica'],
         "Química": ['Química Geral', 'Físico-Química','Química Orgânica', 'Química Inorgânica'],
     };
 
     const materiaSelect = document.getElementById('materia-select');
-    const temaSelect = document.getElementById('tema-select');
+    const assuntoSelect = document.getElementById('assunto-select');
     
     const materiaSelecionada = materiaSelect.value;
-    const temas = temasPorMateria[materiaSelecionada] || [];
+    const assuntos = assuntosPorMateria[materiaSelecionada] || [];
 
-    temaSelect.innerHTML = '';
+    assuntoSelect.innerHTML = '';
 
-    temas.forEach(tema => {
+    assuntos.forEach(assunto => {
         const option = document.createElement('option');
-        option.value = tema.toLowerCase();
-        option.textContent = tema;
-        temaSelect.appendChild(option);
+        option.value = assunto.toLowerCase();
+        option.textContent = assunto;
+        assuntoSelect.appendChild(option);
     });
 }
 
@@ -52,7 +52,7 @@ async function gerarImagem(dados) {
     downloadBtn.classList.add("d-none");
 
     try {
-        const res = await fetch("/api/ia/generate", {
+        const res = await fetch("/api/ia/gerar-imagem", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

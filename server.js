@@ -1,22 +1,14 @@
 const MENSAGEM_ERRO_PADRAO = 'Erro interno do servidor. Entre em contato conosco caso o problema persista.';
 
-// 1. IMPORTAÇÕES E CONFIGURAÇÃO INICIAL
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs'); // Necessário para a função de login
-// const jwt = require('jsonwebtoken'); // Necessário para a função de login
-// const cookieParser = require('cookie-parser'); // <-- Adicionado
-const crypto = require('crypto');
-const nodemailer = require('nodemailer'); // <-- ADICIONE ESTA LINHA
 const Image = require('./Models/Image');
 const cors = require('cors');
 
-// Importa o nosso Modelo de Utilizador
 const User = require('./Models/User');
 const { protect } = require('./middleware/authMiddleware');
-const fs = require('fs');
 const axios = require('axios');
 const FormData = require('form-data');
 const { v2: cloudinary } = require('cloudinary');
@@ -30,11 +22,10 @@ cloudinary.config({
 const app = express();
 const port = process.env.PORT || 3000;
 
-// 2. CONEXÃO COM A BASE DE DADOS
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB Atlas Conectado com Sucesso!');
+    console.log('MongoDB Atlas conectado.');
   } catch (error) {
     console.error('Erro ao conectar ao MongoDB Atlas:', error.message);
     process.exit(1);
@@ -42,18 +33,13 @@ const connectDB = async () => {
 };
 connectDB();
 
-// 3. MIDDLEWARE
-app.use(express.urlencoded({ extended: true })); // Para formulários HTML
-app.use(express.json()); // Para receber JSON
-// app.use(cookieParser()); // <-- Adicionado para gerir cookies
+app.use(express.json());
 
 app.use(cors({
-  origin: true, // Permite que qualquer origem envie cookies (bom para desenvolvimento)
-  credentials: true // Essencial! Permite que o navegador envie cookies na requisição
+  origin: true,
+  credentials: true
 }));
 
-// Servir ficheiros estáticos
-app.use(express.static(path.join(__dirname, 'html')));
 app.use('/styles', express.static(path.join(__dirname, 'styles')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
@@ -63,7 +49,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 const session = require('express-session');
 app.use(session({
-  secret: ';hnodawhd;ouawhd;oiawbh;foawh',
+  secret: require('crypto').randomBytes(64).toString('hex'),
   resave: false,
   saveUninitialized: false
 }));
@@ -73,23 +59,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// 4. ROTAS DA APLICAÇÃO
-
-// API IA Stable core requisições
-
-// server.js
-
-// ROTAS DAS PÁGINAS 
 app.get('/', (req, res) => {
   res.render('index');
 });
 
 app.get('/configuracoes', protect, (req, res) => {
   res.render('configuracoes');
-});
-
-app.get('/editar', (req, res) => {
-  res.render('editar');
 });
 
 app.get('/faq', (req, res) => {
@@ -100,27 +75,14 @@ app.get('/gerador', protect, (req, res) => {
   res.render('gerador');
 });
 
-// Use async/await para lidar com a busca no banco de dados
-// Importe o modelo no topo do seu arquivo de rotas, se já não estiver lá
-
-// Esta é a ROTA QUE RENDERIZA A PÁGINA
 app.get('/historico', protect, async (req, res) => {
-  
-  // ----- DEBUG 1: Verifique se o usuário está logado -----
-  console.log('ID do usuário buscando histórico:', req.user._id);
-
   try {
-    // Busque as imagens usando o _id do usuário
     const imagensDoUsuario = await Image.find({ user: req.user._id }).sort({ createdAt: -1 });
-
-    console.log('Imagens encontradas no banco:', imagensDoUsuario);
-
-    // Renderize a view, passando o array de imagens
     res.render('historico', { imagens: imagensDoUsuario });
 
   } catch (err) {
-    console.error("Erro ao buscar histórico: ", err);
-    res.status(500).send("Erro ao carregar o histórico.");
+    console.error("Erro (/historico):", err);
+    res.status(500).send({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
 
@@ -128,8 +90,8 @@ app.get('/login', (req, res) => {
   res.render('login');
 });
 
-app.get('/cadastro', (req, res) => {
-  res.render('cadastro');
+app.get('/criar-conta', (req, res) => {
+  res.render('criar-conta');
 });
 
 app.get('/sobre', (req, res) => {
@@ -144,7 +106,7 @@ app.get('/politica-de-privacidade', (req, res) => {
   res.render('politica-de-privacidade');
 });
 
-app.post('/api/ia/generate', protect, async (req, res) => {
+app.post('/api/ia/gerar-imagem', protect, async (req, res) => {
   try {
     const { materia, assunto, estilo, descricao } = req.body;
 
@@ -212,12 +174,12 @@ app.post('/api/ia/generate', protect, async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Erro:", error.response ? (error.response.data.toString() || error.message) : error.message);
+    console.error("Erro (/api/ia/gerar-imagem):", error.response ? (error.response.data.toString() || error.message) : error.message);
     return res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
 
-app.delete('/api/ia/history/:id', protect, async (req, res) => {
+app.delete('/api/historico/excluir-imagem/:id', protect, async (req, res) => {
   try {
     const image = await Image.findById(req.params.id);
 
@@ -241,12 +203,12 @@ app.delete('/api/ia/history/:id', protect, async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Erro:", error.message);
+    console.error("Erro (/api/historico/excluir-imagem/:id):", error.message);
     return res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
 
-app.post('/api/users/register', async (req, res) => {
+app.post('/api/conta/criar-conta', async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
@@ -276,7 +238,7 @@ app.post('/api/users/register', async (req, res) => {
         email: user.email,
       });
     } else {
-      res.status(400).json({ message: 'Dados de utilizador inválidos.' });
+      throw new Error('Erro de sessão ao autenticar o usuário criado.');
     }
   } catch (error) {
     if (error.name === 'ValidationError') {
@@ -285,12 +247,12 @@ app.post('/api/users/register', async (req, res) => {
       return res.status(400).json({ message: errorMessage });
     }
 
-    console.error('Erro:', error);
+    console.error('Erro (/api/conta/criar-conta):', error);
     res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
 
-app.post('/api/users/login', async (req, res) => {
+app.post('/api/conta/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -314,42 +276,12 @@ app.post('/api/users/login', async (req, res) => {
       res.status(401).json({ message: 'E-mail ou senha inválidos.' });
     }
   } catch (error) {
-    console.error('Erro:', error);
+    console.error('Erro (/api/conta/login):', error);
     res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
 
-app.post('/api/users/reset-password/:token', async (req, res) => {
-  try {
-    const hashedToken = crypto
-      .createHash('sha256')
-      .update(req.params.token)
-      .digest('hex');
-
-    const user = await User.findOne({
-      passwordResetToken: hashedToken,
-      passwordResetExpires: { $gt: Date.now() },
-    });
-
-    if (!user) {
-      return res.status(400).json({ message: 'O token é inválido ou expirou.' });
-    }
-
-    user.password = req.body.password;
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-
-    await user.save();
-
-    return res.status(200).json({ message: 'Senha redefinida com sucesso!' });
-
-  } catch (error) {
-    console.error('Erro no reset-password:', error);
-    return res.status(500).json({ message: 'Erro ao redefinir a senha.' });
-  }
-});
-
-app.put('/api/users/alterar-nome', protect, async (req, res) => {
+app.put('/api/conta/alterar-nome', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
 
@@ -369,15 +301,14 @@ app.put('/api/users/alterar-nome', protect, async (req, res) => {
       req.session.user.name = updatedUser.name;
 
       req.session.save((err) => {
-          if (err) {
-              console.error('Erro ao atualizar sessão:', err);
-              return res.status(500).json({ success: false, message: 'Erro ao atualizar sessão.' });
-          }
+        if (err) {
+          throw new Error('Erro ao atualizar sessão.');
+        }
 
-          res.status(200).json({ success: true });
+        res.status(200).json({ success: true });
       });
     } else {
-      return res.status(400).json({ message: 'Erro de autenticação: Usuário não encontrado.' });
+      throw new Error('Erro de autenticação.');
     }
   } catch (error) {
     if (error.name === 'ValidationError') {
@@ -385,12 +316,12 @@ app.put('/api/users/alterar-nome', protect, async (req, res) => {
       const errorMessage = messages[0];
       return res.status(400).json({ message: errorMessage });
     }
-    console.error('Erro:', error);
+    console.error('Erro (/api/conta/alterar-nome):', error);
     return res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
 
-app.put('/api/users/alterar-email', protect, async (req, res) => {
+app.put('/api/conta/alterar-email', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
 
@@ -411,14 +342,13 @@ app.put('/api/users/alterar-email', protect, async (req, res) => {
 
       req.session.save((err) => {
           if (err) {
-              console.error('Erro ao atualizar sessão:', err);
-              return res.status(500).json({ success: false, message: 'Erro ao atualizar sessão.' });
+            throw new Error('Erro ao atualizar sessão.');
           }
 
           res.status(200).json({ success: true });
       });
     } else {
-      return res.status(400).json({ message: 'Erro de autenticação: Usuário não encontrado.' });
+      throw new Error('Erro de autenticação.');
     }
   } catch (error) {
     if (error.name === 'ValidationError') {
@@ -426,12 +356,12 @@ app.put('/api/users/alterar-email', protect, async (req, res) => {
       const errorMessage = messages[0];
       return res.status(400).json({ message: errorMessage });
     }
-    console.error('Erro:', error);
+    console.error('Erro (/api/conta/alterar-email):', error);
     return res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
 
-app.put('/api/users/alterar-senha', protect, async (req, res) => {
+app.put('/api/conta/alterar-senha', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
 
@@ -451,7 +381,7 @@ app.put('/api/users/alterar-senha', protect, async (req, res) => {
       res.status(200).json({ success: true });
 
     } else {
-      return res.status(400).json({ message: 'Erro de autenticação: Usuário não encontrado.' });
+      throw new Error('Erro de autenticação.');
     }
   } catch (error) {
     if (error.name === 'ValidationError') {
@@ -459,12 +389,12 @@ app.put('/api/users/alterar-senha', protect, async (req, res) => {
       const errorMessage = messages[0];
       return res.status(400).json({ message: errorMessage });
     }
-    console.error('Erro:', error);
+    console.error('Erro (/api/conta/alterar-senha):', error);
     return res.status(500).json({ message: MENSAGEM_ERRO_PADRAO });
   }
 });
 
-app.delete('/api/users/excluir-conta', protect, async (req, res) => {
+app.delete('/api/conta/excluir-conta', protect, async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
 
@@ -482,7 +412,7 @@ app.delete('/api/users/excluir-conta', protect, async (req, res) => {
         res.status(200).json({ success: true });
       });
     } else {
-      return res.status(400).json({ message: 'Erro de autenticação: Usuário não encontrado.' });
+      throw new Error('Erro de autenticação.');
     }
   } catch (error) {
     console.error('Erro:', error);
@@ -490,7 +420,7 @@ app.delete('/api/users/excluir-conta', protect, async (req, res) => {
   }
 });
 
-app.post('/api/users/logout', (req, res, next) => {
+app.post('/api/conta/logout', (req, res, next) => {
   req.session.destroy(err => {
     if (err) {
       return next(err); 
@@ -500,7 +430,6 @@ app.post('/api/users/logout', (req, res, next) => {
   });
 });
 
-// INICIAR O SERVIDOR
 app.listen(port, () => {
     console.log(`Servidor a rodar em http://localhost:${port}`);
 });

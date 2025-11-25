@@ -36,7 +36,7 @@ async function cadastrar(dados) {
     }
 
     try {
-        const response = await fetch('/api/users/register', {
+        const response = await fetch('/api/conta/criar-conta', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
