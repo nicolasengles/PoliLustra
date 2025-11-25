@@ -91,6 +91,10 @@ textarea {
     z-index: -1;
 }
 
+.mobile-min-width {
+    min-height: 83vh;
+}
+
 @media (min-width: map-get($grid-breakpoints, "md")) {
     .my-md-5 {
         margin-top: map-get($spacers, 5) !important;
