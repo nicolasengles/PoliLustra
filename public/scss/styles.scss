@@ -46,18 +46,6 @@ textarea {
     height: 90vh !important;
 }
 
-.w-30 {
-    width: 30% !important;
-}
-
-.w-35 {
-    width: 35% !important;
-}
-
-.w-60 {
-    width: 60% !important;
-}
-
 .w-80 {
     width: 80% !important;
 }
@@ -100,10 +88,6 @@ textarea {
     .p-md-0 {
         padding: 0 !important;
     }
-    
-    .w-md-25 {
-        width: 25% !important;
-    }
 
     .w-md-30 {
         width: 30% !important;
@@ -133,10 +117,6 @@ textarea {
         margin-bottom: 0 !important;
     }
 
-    .mb-md-4 {
-        margin-bottom: map-get($spacers, 4) !important;
-    }
-
     .my-md-0 {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
@@ -149,18 +129,5 @@ textarea {
     .mx-md-2 {
         margin-left: map-get($spacers, 2) !important;
         margin-right: map-get($spacers, 2) !important;
-    }
-
-    .me-md-4 {
-        margin-right: map-get($spacers, 4) !important;
-    }
-
-    .my-md-7 {
-        margin-top: 7rem !important;
-        margin-bottom: 7rem !important;
-    }
-
-    .mt-md-0 {
-        margin-top: 0 !important;
     }
 }
